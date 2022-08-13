@@ -10,6 +10,8 @@ services:
     build: ./backend
     ports:
       - 4200:4200
+    depends_on:
+      - database
     restart: always
 
   session:
@@ -24,8 +26,9 @@ services:
       - 7654:5432
     environment:
       - POSTGRES_PASSWORD="local_root"
+      - POSTGRES_DB=saand
     volumes:
-      - saand:/saand/database      
+      - saand:/saand/database
     restart: always
 
 volumes:
