@@ -1,41 +1,31 @@
-version: "3.8"
+version: "3.3"
 services:
-  frontend_saand:
+  frontend:
     build: ./frontend
     ports:
       - 3200:3200
-    networks:
-      - saand
     restart: always
 
-  backend_saand:
+  backend:
     build: ./backend
     ports:
       - 4200:4200
-    networks:
-      - saand
     restart: always
 
-  session_saand:
+  session:
     image: redis:7.0.4
     ports:
       - 7653:6379
-    networks:
-      - saand
     restart: always
 
-  database_saand:
+  database:
     image: postgres:14.5
     ports:
       - 7654:5432
     environment:
-      - POSTGRES_USER="local_postgres"
       - POSTGRES_PASSWORD="local_root"
-      - POSTGRES_DB="local_db"
     volumes:
-      - saand: /saand/database
-    networks:
-      - saand
+      - saand:/saand/database      
     restart: always
 
 volumes:

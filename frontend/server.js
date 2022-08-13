@@ -24,9 +24,8 @@ const testRoute = async (req, res) => {
   console.log("\n\n ### Hit on -- frontend test route -- ### \n\n");
   const resposne = await axios.get(`${constants.backendURL}/test`);
   console.log("Got response from backend server > ", resposne);
-  res.json({ data: { serverResponse: resposne } });
+  res.json({ data: { serverResponse: resposne.data } });
 };
-
 app.get("/", (req, res) => {
   res.send("On HOmepage");
 });
