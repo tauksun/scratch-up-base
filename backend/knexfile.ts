@@ -3,29 +3,16 @@
 /**
  * @type { Object.<string, import("knex").Knex.Config> }
  */
+
+import { constants } from "./helpers";
+
 export default {
   development: {
     client: "postgresql",
     connection: {
-      database: "saand",
-      user: "postgres",
-      password: "local_root",
-    },
-    pool: {
-      min: 2,
-      max: 10,
-    },
-    migrations: {
-      tableName: "knex_migrations",
-    },
-  },
-
-  production: {
-    client: "postgresql",
-    connection: {
-      database: "haha",
-      user: "haha",
-      password: "haha",
+      database: `${constants.postgresDB}:${constants.postgresPort}`,
+      user: constants.postgresUser,
+      password: constants.postgresPassword,
     },
     pool: {
       min: 2,

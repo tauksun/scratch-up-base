@@ -12,12 +12,16 @@ services:
       - 4200:4200
     depends_on:
       - database
+      - redis
     restart: always
 
-  session:
+  redis:
     image: redis:7.0.4
     ports:
       - 7653:6379
+    volumes:
+      - /saand/redis:/data
+    #command: ["redis-server", "./redis.conf"]
     restart: always
 
   database:
@@ -26,9 +30,9 @@ services:
       - 7654:5432
     environment:
       - POSTGRES_PASSWORD="local_root"
-      - POSTGRES_DB=saand
+      - POSTGRES_DB="saand"
     volumes:
-      - saand:/saand/database
+      - /saand/postgres:/var/lib/postgresql/data
     restart: always
 
 volumes:
