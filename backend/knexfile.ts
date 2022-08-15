@@ -6,13 +6,23 @@
 
 import { constants } from "./helpers";
 
+const {
+  postgresHost,
+  postgresDB,
+  postgresUser,
+  postgresPassword,
+  postgresPort,
+} = constants;
+
 export default {
   development: {
     client: "postgresql",
     connection: {
-      database: `${constants.postgresDB}:${constants.postgresPort}`,
-      user: constants.postgresUser,
-      password: constants.postgresPassword,
+      host: postgresHost,
+      database: postgresDB,
+      user: postgresUser,
+      password: postgresPassword,
+      port: postgresPort,
     },
     pool: {
       min: 2,

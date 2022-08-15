@@ -5,11 +5,17 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Custom Modules
-import { constants, checkAndMigrate, checkAndSeed } from "./helpers";
+import {
+  constants,
+  checkAndMigrate,
+  checkAndSeed,
+  connectToPostgres,
+  connectToRedis,
+} from "./helpers";
 import { corsHandler, headersHandler } from "./middlewares";
 
 // Routes/Apis
-import { testRoute } from "./api";
+import { redisTest, testRoute, redisTestGETDATA } from "./api";
 
 //>>>>>>>>>> Delete this after fixing middlewares implementation >>>>>>>>>//
 import cors from "cors";
@@ -19,8 +25,11 @@ const app: Application = express();
 const PORT = constants.PORT;
 
 const expressServer = async () => {
-  // Check for Migrations, Seeding Database & execute accordingly
+  // Connect to DBs
+  await connectToPostgres();
+  await connectToRedis();
 
+  // Check for Migrations, Seeding Database & execute accordingly
   await checkAndMigrate();
   await checkAndSeed();
 
@@ -35,6 +44,8 @@ const expressServer = async () => {
 
   // # Testing //
   app.get("/test", testRoute);
+  app.get("/redis-test", redisTest);
+  app.get("/redis-get-data", redisTestGETDATA);
 
   // Start Application
 

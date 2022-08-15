@@ -13,7 +13,7 @@ export async function up(knex: Knex): Promise<void> {
   // create user_details table
   await knex.schema.createTable("user_details", (table) => {
     table.bigIncrements("id", { primaryKey: true });
-    table.string("user_id").notNullable();
+    table.uuid("user_id").notNullable();
     table.foreign("user_id").references("id").inTable("users");
     table.string("username").notNullable();
     table.string("phone_number").defaultTo(null);

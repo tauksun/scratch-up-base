@@ -21,7 +21,6 @@ services:
       - 7653:6379
     volumes:
       - /saand/redis:/data
-    #command: ["redis-server", "./redis.conf"]
     restart: always
 
   database:
@@ -29,8 +28,8 @@ services:
     ports:
       - 7654:5432
     environment:
-      - POSTGRES_PASSWORD="local_root"
-      - POSTGRES_DB="saand"
+      - POSTGRES_PASSWORD=local_root
+      - POSTGRES_DB=saand
     volumes:
       - /saand/postgres:/var/lib/postgresql/data
     restart: always

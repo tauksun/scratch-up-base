@@ -1,4 +1,4 @@
-import { constants, ask, executeInShell } from ".";
+import { constants, ask, executeInShell } from "..";
 
 const runMigrations = constants.runMigrations;
 
@@ -39,7 +39,7 @@ const checkAndMigrate = async () => {
 async function migrate(): Promise<any> {
   try {
     console.log("\n\n Running migrations \n\n");
-    // await executeInShell("./node_modules/knex/bin/cli.js migrate:up");
+    await executeInShell("./node_modules/knex/bin/cli.js migrate:up");
     console.log("\n\n Migrations ran successfully\n\n");
     return;
   } catch (error) {

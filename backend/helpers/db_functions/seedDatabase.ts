@@ -1,4 +1,4 @@
-import { constants, ask, executeInShell } from ".";
+import { constants, ask, executeInShell } from "..";
 
 const seedDatabase = constants.seedDatabase;
 
