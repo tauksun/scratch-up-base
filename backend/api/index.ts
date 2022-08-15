@@ -1,4 +1,4 @@
 // Tunnel
-import { testRoute, redisTest, redisTestGETDATA } from "./test";
+import { testRoute, redisTest, redisTestGETDATA, postgresTest } from "./test";
 
-export { testRoute, redisTest, redisTestGETDATA };
+export { testRoute, redisTest, redisTestGETDATA, postgresTest };

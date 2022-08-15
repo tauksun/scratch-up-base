@@ -15,7 +15,7 @@ import {
 import { corsHandler, headersHandler } from "./middlewares";
 
 // Routes/Apis
-import { redisTest, testRoute, redisTestGETDATA } from "./api";
+import { redisTest, testRoute, redisTestGETDATA, postgresTest } from "./api";
 
 //>>>>>>>>>> Delete this after fixing middlewares implementation >>>>>>>>>//
 import cors from "cors";
@@ -46,6 +46,7 @@ const expressServer = async () => {
   app.get("/test", testRoute);
   app.get("/redis-test", redisTest);
   app.get("/redis-get-data", redisTestGETDATA);
+  app.get("/postgres-test",postgresTest);
 
   // Start Application
 

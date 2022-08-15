@@ -1,7 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 
-import { connectToRedis } from "../helpers";
-import connect from "../helpers/db_functions/connectToRedis";
+import { connectToRedis, connectToPostgres } from "../helpers";
+
+import { v4 } from "uuid";
 
 const testRoute = (req: Request, res: Response) => {
   console.log("\n\n### Hit on test route ### \n\n");
@@ -40,4 +41,21 @@ const redisTestGETDATA = async (req: Request, res: Response) => {
   res.json({ result });
 };
 
-export { testRoute, redisTest, redisTestGETDATA };
+const postgresTest = async (req: Request, res: Response) => {
+  const id = v4();
+  console.log("\n\n -------- Hit on postgresTest ");
+  let result: any = null;
+  console.log("\n\n --------- ### TEST ### Con to postgres ");
+  const postgresConnection = await connectToPostgres();
+  console.log("\n\n ----------- ### TEST ### writing to postgres ");
+  const postgresResponse = await postgresConnection.table("users").insert({
+    id,
+    email: "something@testing.com",
+    password: "iamapassword",
+  });
+  console.log("\n\n Got this from postgres : ", postgresResponse);
+  result = "Succcessfully wrote data to postgres : " + postgresResponse;
+  res.json({ result });
+};
+
+export { testRoute, redisTest, redisTestGETDATA, postgresTest };

@@ -18,21 +18,15 @@ let connectionToRedis: any = null;
 
 const connect = async () => {
   try {
-
-    ///////////////////////////////
-    console.log({connectionToRedis})
-
     if (connectionToRedis) {
-      console.log("\n\nConnection to Redis already exists.\n\n");
+      console.log("\n\nConnection to Redis already exists.");
       return connectionToRedis;
     }
-    console.log("\n\nEstablishing connection to Redis ... \n\n");
-    const connection = await client.connect();
+    console.log("\n\nEstablishing connection to Redis ...");
+    await client.connect();
+    console.log("\n\nSuccessfully connected to Redis.");
 
-    ///////////////////////////////////
-    console.log({connection})
-
-    connectionToRedis = connection;
+    connectionToRedis = client;
     return connectionToRedis;
   } catch (error) {
     console.log("\n\nError occured while connecting to Redis : ", error);

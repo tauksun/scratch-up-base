@@ -12,7 +12,7 @@ const checkAndMigrate = async () => {
   // #IMPORTANT : Don't prompt when running in docker
   if (runMigrations === "true") {
     try {
-      const buildindInDocker = constants.buildindInDocker;
+      const buildindInDocker = constants.builtInDocker;
       const answer = buildindInDocker
         ? "y"
         : await ask("\n\nAre you sure about running migrations ? (y/n)\n\n");

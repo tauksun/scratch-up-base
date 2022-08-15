@@ -11,7 +11,7 @@ const checkAndSeed = async () => {
   // Prompt for y/n, if seedDatabase is not set to force
   if (seedDatabase === "true") {
     try {
-      const buildindInDocker = constants.buildindInDocker;
+      const buildindInDocker = constants.builtInDocker;
       const answer = buildindInDocker
         ? "y"
         : await ask("\n\nAre you sure about seeding the database ? (y/n)\n\n");
