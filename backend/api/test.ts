@@ -58,4 +58,11 @@ const postgresTest = async (req: Request, res: Response) => {
   res.json({ result });
 };
 
-export { testRoute, redisTest, redisTestGETDATA, postgresTest };
+const nginxTest = (req: Request, res: Response, next: NextFunction) => {
+  console.log("\n\n### Gotcha in mid ### \n\n");
+  console.log(req.url);
+  req.url = req.url.replace("/api", "");
+  next();
+};
+
+export { testRoute, redisTest, redisTestGETDATA, postgresTest, nginxTest };
