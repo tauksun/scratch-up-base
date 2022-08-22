@@ -65,4 +65,32 @@ const nginxTest = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export { testRoute, redisTest, redisTestGETDATA, postgresTest, nginxTest };
+const getPostgresData = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  console.log("\n\n ### Hit on get postgres data ### \n\n");
+
+  let result: any = null;
+
+  console.log("\n\n --------- ### TEST ### Con to postgres ");
+  const postgresConnection = await connectToPostgres();
+
+  console.log("\n\n ----------- ### TEST ### reading from postgres ");
+  const postgresResponse = await postgresConnection
+    .table("users")
+    .select("id", "email");
+  console.log("\n\n Got this from postgres : ", postgresResponse);
+  result = "Succcessfully read from  postgres : " + postgresResponse;
+  res.json({ result });
+};
+
+export {
+  testRoute,
+  redisTest,
+  redisTestGETDATA,
+  postgresTest,
+  nginxTest,
+  getPostgresData,
+};

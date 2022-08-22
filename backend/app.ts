@@ -21,6 +21,7 @@ import {
   redisTestGETDATA,
   postgresTest,
   nginxTest,
+  getPostgresData,
 } from "./api";
 
 //>>>>>>>>>> Delete this after fixing middlewares implementation >>>>>>>>>//
@@ -54,6 +55,7 @@ const expressServer = async () => {
   app.get("/redis-test", redisTest);
   app.get("/redis-get-data", redisTestGETDATA);
   app.get("/postgres-test", postgresTest);
+  app.get("/get-postgres-data",getPostgresData)
 
   // Start Application
 
