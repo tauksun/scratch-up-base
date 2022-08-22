@@ -4,4 +4,5 @@ COPY . /code/
 RUN npm install
 EXPOSE 3200
 ENV docker_build="true"
-CMD ["npm","start"]
+CMD ["npm","run","dock"]
+

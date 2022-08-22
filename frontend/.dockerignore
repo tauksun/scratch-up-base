@@ -1,1 +1,5 @@
 node_modules
+public
+src
+Dockerfile
+README.node_modules
