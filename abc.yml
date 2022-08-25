@@ -1,0 +1,15 @@
+
+frontEnd:
+    build: ./frontend
+    ports:
+     - 3200:3200
+    restart: always
+
+backEnd:
+    build: ./backend
+    ports:
+     - 4200:4200
+    depends_on:
+     - database
+     - redis
+    restart: always

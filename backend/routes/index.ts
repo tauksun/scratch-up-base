@@ -1,5 +1,5 @@
-import Router, { Request, Response } from "express";
-import { userManagement } from "../api";
+import Router from "express";
+import { userManagement, pages } from "../api";
 
 const router = Router();
 
@@ -12,8 +12,8 @@ router.get("/user-data", userManagement.getUserData);
 
 // Uploads //
 
+
 // Not Found //
-// TODO : correct this implementation >> move out ######################
-router.all("/*",(req:Request,res:Response)=>res.send("Not Found : "+req.url))
+router.all("/*", pages.notFound);
 
 export default router;
