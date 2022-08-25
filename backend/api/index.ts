@@ -1,18 +1,5 @@
-// Tunnel
-import {
-  testRoute,
-  redisTest,
-  redisTestGETDATA,
-  postgresTest,
-  nginxTest,
-  getPostgresData,
-} from "./test";
+// Tunnel //
 
-export {
-  testRoute,
-  redisTest,
-  redisTestGETDATA,
-  postgresTest,
-  nginxTest,
-  getPostgresData,
-};
+import * as userManagement from "./user-management";
+
+export { userManagement };
