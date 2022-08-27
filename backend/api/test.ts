@@ -4,6 +4,8 @@ import { connectToRedis, connectToPostgres } from "../helpers";
 
 import { v4 } from "uuid";
 
+import { insert, select } from "../models/postgres";
+
 const testRoute = (req: Request, res: Response) => {
   console.log("\n\n### Hit on test route ### \n\n");
   res.json("From test route");
@@ -75,15 +77,44 @@ const getPostgresData = async (
   let result: any = null;
 
   console.log("\n\n --------- ### TEST ### Con to postgres ");
-  const postgresConnection = await connectToPostgres();
+  // const postgresConnection = await connectToPostgres();
 
-  console.log("\n\n ----------- ### TEST ### reading from postgres ");
-  const postgresResponse = await postgresConnection
-    .table("users")
-    .select("id", "email");
+  // console.log("\n\n ----------- ### TEST ### reading from postgres ");
+  // const postgresResponse = await postgresConnection
+  //   .table("users")
+  //   .select("");
+  const postgresResponse = await select({
+    table: "users",
+    columns: ["email"],
+  });
   console.log("\n\n Got this from postgres : ", postgresResponse);
   result = "Succcessfully read from  postgres : " + postgresResponse;
   res.json({ result });
+};
+
+// 27082022 //
+const insertTest = async (req: Request, res: Response) => {
+  try {
+    console.log("\nInsert test\n");
+    const email = req.params.email;
+    console.log("\nparams data > ", email);
+    const id = v4();
+    console.log("\nInserting data ...");
+    const result = await insert({
+      table: "",
+      data: [
+        {
+          id,
+          email: email,
+          password: "iamapassword-hehe",
+        },
+      ],
+    });
+    console.log("\nSuccessfully inserted ");
+    res.json(result);
+  } catch (error) {
+    res.json({ error });
+  }
 };
 
 export {
@@ -93,4 +124,5 @@ export {
   postgresTest,
   nginxTest,
   getPostgresData,
+  insertTest,
 };
