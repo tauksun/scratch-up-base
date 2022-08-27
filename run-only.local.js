@@ -1,54 +1,61 @@
+/**
+ * Running containers from this file creates a new process &
+ * uses that to run containers.
+ *
+ * It is safe to ctrl+c, if you don't want to see logs, containers won't stop
+ */
+
 // Containers configuration
-const version = `3.3`;
+const version = "3.3";
 const volumes = `
   saand:
 `;
 const frontend = `
-build: ./frontend
-ports:
-  - 3200:3200
-restart: always
+    build: ./frontend
+    ports:
+      - 3200:3200
+    restart: always
 `;
 const backend = `
-build: ./backend
-ports:
-  - 4200:4200
-depends_on:
-  - database
-  - redis
-restart: always
+    build: ./backend
+    ports:
+      - 4200:4200
+    depends_on:
+      - database
+      - redis
+    restart: always
 `;
 
 const database = `
-image: postgres:14.5
-ports:
-  - 7654:5432
-environment:
-  - POSTGRES_PASSWORD=local_root
-  - POSTGRES_DB=saand
-volumes:
-  - /saand/postgres:/var/lib/postgresql/data
-restart: always
+    image: postgres:14.5
+    ports:
+      - 7654:5432
+    environment:
+      - POSTGRES_PASSWORD=local_root
+      - POSTGRES_DB=saand
+    volumes:
+      - /saand/postgres:/var/lib/postgresql/data
+    restart: always
 `;
 
 const redis = `
-image: redis:7.0.4
-ports:
-  - 7653:6379
-volumes:
-  - /saand/redis:/data
-restart: always
+    image: redis:7.0.4
+    ports:
+      - 7653:6379
+    volumes:
+      - /saand/redis:/data
+    restart: always
 `;
 const proxy = `
-image: nginx:1.23.1
-ports:
-  - 80:80
-volumes:
-  - ./nginx:/etc/nginx/conf.d
-depends_on:
-  - frontend
-  - backend
-restart: always
+    image: nginx:1.23.1
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx:/etc/nginx/conf.d
+    depends_on:
+      - frontend
+      - backend
+    restart: always
 `;
 
 const containerConfig = {
@@ -62,8 +69,19 @@ const containerConfig = {
 };
 
 const validContainers = ["backend", "frontend", "proxy", "redis", "database"];
+const jsFileName = "run-only.local.js";
+// logger
+// set to false > to not log container logs when run from this file
+const logger = (...params) => {
+  const log = true;
+  if (log) {
+    return console.log(...params);
+  }
+  return;
+};
 
 async function synchronousCommandExecution(command) {
+  const { exec } = require("child_process");
   return new Promise((resolve, reject) => {
     exec(command, (error, stdout, stderr) => {
       if (error || stderr) {
@@ -75,24 +93,22 @@ async function synchronousCommandExecution(command) {
 }
 
 function streamedCommandExecution(command) {
+  const { spawn } = require("child_process");
   const process = spawn("bash", ["-c", command]);
-  process.stdout.on("data", (data) => console.log("\n", data.toString()));
-  process.stderr.on("data", (error) =>
-    console.log("\nError : ", error.toString())
-  );
-  process.on("close", () => console.log("\nStopped."));
-  process.on("error", (err) => console.log("\nError : ", err));
+  process.stdout.on("data", (data) => logger("\n", data.toString()));
+  process.stderr.on("data", (error) => logger("\n", error.toString()));
+  process.on("close", () => logger("\nStopped."));
+  process.on("error", (err) => logger("\nError : ", err.toString()));
 }
 
 async function getAllRunningContainerNames() {
   try {
     const command = 'sudo docker ps --format "{{.Names}}"';
     const result = await synchronousCommandExecution(command);
-    const containersArray = result ? result.split(" ") : [];
     const containers = result ? result.split("\n") : [];
     return containers;
   } catch (error) {
-    console.log("\nError occured while getting running containers : ", error);
+    logger("\nError occured while getting running containers : ", error);
     throw error;
   }
 }
@@ -104,7 +120,7 @@ async function getAllContainerNames() {
     const containers = result ? result.split("\n") : [];
     return containers;
   } catch (error) {
-    console.log("\nError occured while getting running containers : ", error);
+    logger("\nError occured while getting running containers : ", error);
     throw error;
   }
 }
@@ -132,7 +148,7 @@ async function removeRunningContainers() {
       if (containersToStop) {
         const stopCommand = `sudo docker stop ${containersToStop}`;
         const stopResult = await synchronousCommandExecution(stopCommand);
-        console.log("\n Stopped containers result : ", stopResult);
+        logger("\n Stopped containers result : \n", stopResult);
       }
     }
 
@@ -149,11 +165,11 @@ async function removeRunningContainers() {
       if (containersToRemove) {
         const removeCommand = `sudo docker rm ${containersToRemove}`;
         const removeResult = await synchronousCommandExecution(removeCommand);
-        console.log("\n Removed containers result : ", removeResult);
+        logger("\n Removed containers result : \n", removeResult);
       }
     }
   } catch (error) {
-    console.log(
+    logger(
       "\nError occured while removing already running saand containers : ",
       error
     );
@@ -185,86 +201,130 @@ function validatePassedContainers(containerNames) {
   }
 }
 
-function help() {
+function help(data) {
   const passedArguments = getPassedArguments();
   if (!(passedArguments[0] === "help")) {
     return;
   }
+  const fileName = data.fileName;
+  if (!fileName) {
+    throw "Internal error : No filename passed to help function";
+  }
   const validCommands = `
-  Run this file to run specific containers 
-  syntax : node run-only.local.js <containername> <containername2>
+  Use this file to run specific containers 
+
+  syntax :- node ${fileName} <containername> <containername2>
 
   eg:- 
-  node run-only.local.js database 
-  node run-only.local.js proxy 
-  node run-only.local.js frontend backend 
+  node ${fileName} database 
+  node ${fileName} proxy 
+  node ${fileName} frontend backend 
+
+  To run all containers :- sudo docker-compose up  
+
+  Stop containers with : 
+    - node ${fileName} stop
+    - sudo docker-compose down
+
+  * Running containers from this file creates a new process & uses that to run containers.  
+  * It is safe to ctrl+c, if you don't want to see logs, containers won't stop.  
+  
   `;
-  console.log(validCommands);
+  logger(validCommands);
   return 1;
 }
 
-function makeDockerComposeFile() {}
+function makeContainerToRun(containerNames) {
+  const containersToRun = new Set();
 
-//////// Check validity of passed params ////////
-//////// Compose down first /////////
-const fs = require("fs");
-const { exec, spawn } = require("child_process");
-const executeInShell = (command) => {
-  return new Promise((resolve, reject) => {
-    // exec(command, (error, stdout, stderr) => {
-    //   if (error || stderr) {
-    //     reject(error || stderr);
-    //   }
-    //   resolve(stdout);
-    // });
-    const dockFile = __dirname + "/abc.yml";
-
-    const process = spawn("bash", [
-      "-c",
-      `sudo docker-compose -f ${dockFile} up`,
-    ]);
-    process.stdout.on("data", (data) =>
-      console.log("\n\nData : ", data.toString())
-    );
-    process.stderr.on("data", (data) =>
-      console.log("\n\nError : ", data.toString())
-    );
-    process.on("close", () => console.log("\nClosed"));
-    process.on("error", (err) => console.log("\nErrr > ", err));
-  });
-};
-
-const makeFile = async (params) => {
-  console.log(process.argv.slice(2));
-
-  let ymlData = ``;
-  for (let container of params) {
-    console.log({ container: containerConfig[container] });
-    ymlData += `\n${container}:${containerConfig[container]}`;
+  for (let container of containerNames) {
+    if (container === "frontend") {
+      containersToRun.add("frontend");
+      containersToRun.add("proxy");
+    }
+    if (container === "backend") {
+      containersToRun.add("backend");
+      containersToRun.add("proxy");
+      containersToRun.add("database");
+      containersToRun.add("redis");
+    }
+    if (container === "proxy") {
+      containersToRun.add("proxy");
+      containersToRun.add("database");
+      containersToRun.add("redis");
+      containersToRun.add("backend");
+      containersToRun.add("frontend");
+    }
+    containersToRun.add(container);
   }
 
-  console.log("Creating file");
+  return containersToRun;
+}
 
-  fs.writeFileSync("./abc.yml", ymlData);
+function makeYmlFile(fileData) {
+  const fileName = fileData.fileName;
+  const containers = fileData.containers;
 
-  console.log("File created");
+  // This can also handle if both arguments are not passed \("^")/
+  // one by one
+  if (!(fileName && containers)) {
+    throw `Could not find ${
+      fileName ? "containers to run" : "fileName for yml"
+    } in passed arguments.`;
+  }
 
-  const runCommand = "ls" || "sudo docker-compose -f abc.yml up";
+  const fs = require("fs");
+  let containerData = ``;
+  for (let container of containers) {
+    containerData += `\n  ${container}:${containerConfig[container]}`;
+  }
+  const ymlData = `
+version: "${version}"
+volumes:${volumes}
+services:${containerData}
+  `;
+  fs.writeFileSync(fileName, ymlData);
+  logger(`\n ${fileName} file created`);
+  return;
+}
 
+function runContainers(ymlFile) {
+  const runContainersCommand = `sudo docker-compose -f ./${ymlFile} up`;
+  streamedCommandExecution(runContainersCommand);
+  return;
+}
+
+async function stop() {
   try {
-    console.log("Running ... command ...");
-    await executeInShell(runCommand);
-    console.log("Voila !!!");
+    const passedArguments = getPassedArguments();
+    if (!(passedArguments[0] === "stop")) {
+      return;
+    }
+    await removeRunningContainers();
+    return 1;
   } catch (error) {
-    console.log("Error > ", error);
+    logger("\n Error occured while stopping containers : ", error);
+    logger(
+      "\nTry to stop containers by manually running : sudo docker-compose down"
+    );
+    return 1;
   }
-};
+}
 
 async function run() {
   try {
     // Check for help
-    const didHelp = help();
+    const helpData = {
+      fileName: jsFileName,
+    };
+    const didHelp = help(helpData);
     if (didHelp) {
+      return;
+    }
+
+    // Check for stop
+    const didStop = await stop();
+    if (didStop) {
       return;
     }
 
@@ -275,12 +335,23 @@ async function run() {
     // Stop already running containers
     await removeRunningContainers();
 
-    // ---------------------- Logic to run working combination of containers ------------------ //
-    //
-    //
-    // ----------------------------------------------------------------------------------------//
+    // Logic to run working combination of containers //
+    const containersToRun = makeContainerToRun(containerNames);
+
+    // Make run-only.local.yml file
+
+    const fileName = "run-only.local.yml";
+    const fileData = {
+      fileName,
+      containers: containersToRun,
+    };
+    makeYmlFile(fileData);
+
+    // Run containers
+    runContainers(fileName);
   } catch (error) {
-    console.log("\nError occured while running containers : ", error);
+    logger("\nError occured while running containers : ", error);
+    logger(`\n For checking help run : node ${jsFileName} help`);
   }
 }
 
