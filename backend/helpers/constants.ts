@@ -45,6 +45,10 @@ const getRedisPort = () => {
 const redisUsername = environmentVariables.REDIS_USERNAME || "";
 const redisPassword = environmentVariables.REDIS_PASSWORD || "";
 
+// Tables //
+const users = "users";
+const user_details = "user_details";
+
 const constants = {
   PORT: parseInt(environmentVariables.PORT || "") || 4200,
   builtInDocker,
@@ -60,6 +64,10 @@ const constants = {
   redisPort: getRedisPort(),
   redisUsername,
   redisPassword,
+  tables: {
+    users,
+    user_details,
+  },
 };
 
 export default constants;

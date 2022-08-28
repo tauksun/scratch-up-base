@@ -5,7 +5,7 @@ const router = Router();
 
 // Testing //
 router.get("/test/:email", tests.insertTest);
-router.get("/get-postgres-data", tests.getPostgresData);
+router.get("/get-postgres-data/:query", tests.getPostgresData);
 
 // User-Management //
 router.post("/sign-up", userManagement.signUp);

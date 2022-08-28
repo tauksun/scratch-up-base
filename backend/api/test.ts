@@ -72,24 +72,47 @@ const getPostgresData = async (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("\n\n ### Hit on get postgres data ### \n\n");
+  try {
+    console.log("\n\n ### Hit on get postgres data ### \n\n");
 
-  let result: any = null;
+    let result: any = null;
 
-  console.log("\n\n --------- ### TEST ### Con to postgres ");
-  // const postgresConnection = await connectToPostgres();
+    console.log("\n\n --------- ### TEST ### Con to postgres ");
+    // const postgresConnection = await connectToPostgres();
 
-  // console.log("\n\n ----------- ### TEST ### reading from postgres ");
-  // const postgresResponse = await postgresConnection
-  //   .table("users")
-  //   .select("");
-  const postgresResponse = await select({
-    table: "users",
-    columns: ["email"],
-  });
-  console.log("\n\n Got this from postgres : ", postgresResponse);
-  result = "Succcessfully read from  postgres : " + postgresResponse;
-  res.json({ result });
+    // console.log("\n\n ----------- ### TEST ### reading from postgres ");
+    // const postgresResponse = await postgresConnection
+    //   .table("users")
+    //   .select("");
+    const query = JSON.parse(req.params.query);
+    const where = query.where;
+    const orWhere = query.orWhere;
+
+    const finder: {
+      table: string;
+      columns: Array<String>;
+      where?: any;
+      orWhere?: any;
+    } = {
+      table: "users",
+      columns: ["email"],
+    };
+
+    if (where) {
+      finder.where = where;
+    }
+    if (orWhere) {
+      finder.orWhere = orWhere;
+    }
+
+    const postgresResponse = await select(finder);
+    console.log("\n\n Got this from postgres : ", postgresResponse);
+    result = "Succcessfully read from  postgres : " + postgresResponse;
+    res.json({ result });
+  } catch (error) {
+    console.log("ERRRRor > ", error);
+    res.json({ error });
+  }
 };
 
 // 27082022 //

@@ -3,6 +3,8 @@ import { connectToPostgres } from "../../helpers";
 interface Params {
   table: String;
   columns: Array<String>; // Empty array fetches all columns
+  where?: Array<Object> | Object | String;
+  orWhere?: Array<Object> | Object | String;
 }
 
 interface Result {
@@ -14,7 +16,7 @@ interface Result {
  *
  * @description
  * Fetches columns from the passed table
- *  
+ *
  * To fetch all columns : pass an empty array
  *
  * @example
@@ -29,6 +31,10 @@ const select = async (params: Params): Promise<Result> => {
 
     const table = passedParams.table;
     const columns = passedParams.columns;
+    const where = passedParams?.where || {};
+    const orWhere = passedParams?.orWhere || {};
+
+    console.log({ table, columns, where, orWhere });
 
     // Validate
     if (!(table && columns)) {
@@ -41,7 +47,11 @@ const select = async (params: Params): Promise<Result> => {
     const connection = await connectToPostgres();
 
     // Select
-    const result = await connection.table(table).select(...columns);
+    const result = await connection
+      .table(table)
+      .select(...columns)
+      .where(where)
+      .orWhere(orWhere);
 
     return {
       success: 1,
