@@ -14,7 +14,7 @@ import { connectToPostgres, constants } from "../../helpers";
  * }
  * })
  */
-const createUser = async (params: {
+const create= async (params: {
   id: String;
   email: String;
   password: String;
@@ -26,7 +26,7 @@ const createUser = async (params: {
 
     // Validate
     if (!(table && id && email && password)) {
-      throw `Invalid parameters passed to createUser function.`;
+      throw `Invalid parameters passed to create function.`;
     }
 
     const data = {
@@ -51,4 +51,4 @@ const createUser = async (params: {
   }
 };
 
-export default createUser;
+export default create;

@@ -6,6 +6,7 @@ import checkAndMigrate from "./db_functions/runMigrations";
 import checkAndSeed from "./db_functions/seedDatabase";
 import connectToRedis from "./db_functions/connectToRedis";
 import connectToPostgres from "./db_functions/connectToPostgres";
+import { successResponse, errorResponse } from "./responseMaker";
 
 export {
   constants,
@@ -15,4 +16,6 @@ export {
   checkAndSeed,
   connectToPostgres,
   connectToRedis,
+  successResponse,
+  errorResponse,
 };

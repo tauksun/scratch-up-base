@@ -6,6 +6,8 @@ import { v4 } from "uuid";
 
 import { insert, select } from "../models/postgres";
 
+import { userDetails, users } from "../models";
+
 const testRoute = (req: Request, res: Response) => {
   console.log("\n\n### Hit on test route ### \n\n");
   res.json("From test route");
@@ -47,16 +49,22 @@ const postgresTest = async (req: Request, res: Response) => {
   const id = v4();
   console.log("\n\n -------- Hit on postgresTest ");
   let result: any = null;
-  console.log("\n\n --------- ### TEST ### Con to postgres ");
-  const postgresConnection = await connectToPostgres();
-  console.log("\n\n ----------- ### TEST ### writing to postgres ");
-  const postgresResponse = await postgresConnection.table("users").insert({
-    id,
-    email: "something@testing.com",
+  // console.log("\n\n --------- ### TEST ### Con to postgres ");
+  // const postgresConnection = await connectToPostgres();
+  // console.log("\n\n ----------- ### TEST ### writing to postgres ");
+  // const postgresResponse = await postgresConnection.table("users").insert({
+  //   id,
+  //   email: "something@testing.com",
+  //   password: "iamapassword",
+  // });
+
+  result = await users.create({
+    id: v4(),
+    email: "harsh@kant.com",
     password: "iamapassword",
   });
-  console.log("\n\n Got this from postgres : ", postgresResponse);
-  result = "Succcessfully wrote data to postgres : " + postgresResponse;
+
+  console.log("\n\n Got this from postgres : ", result);
   res.json({ result });
 };
 
@@ -123,17 +131,72 @@ const insertTest = async (req: Request, res: Response) => {
     console.log("\nparams data > ", email);
     const id = v4();
     console.log("\nInserting data ...");
-    const result = await insert({
-      table: "",
-      data: [
-        {
-          id,
-          email: email,
-          password: "iamapassword-hehe",
-        },
-      ],
+    const result = await users.create({
+      id,
+      email,
+      password: "iamapassword",
     });
     console.log("\nSuccessfully inserted ");
+    res.json(result);
+  } catch (error) {
+    res.json({ error });
+  }
+};
+
+const insertDetailsTest = async (req: Request, res: Response) => {
+  try {
+    console.log("\nInsert Details test\n");
+
+    const email = req.params.email;
+    const user_id = req.params.user_id;
+    const username = `abara-${user_id.slice(0, 5)}`;
+    const photo = `http://${new Date()}/}`;
+
+    console.log({ email, user_id, username, photo });
+
+    console.log("\nparams data > ", email);
+    console.log("\nInserting data ...");
+    const result = await userDetails.create({
+      user_id,
+      username,
+    });
+    console.log("\nSuccessfully inserted ");
+    res.json(result);
+  } catch (error) {
+    res.json({ error });
+  }
+};
+
+const getUser = async (req: Request, res: Response) => {
+  try {
+    console.log("\n getUser test\n");
+
+    const email = req.params.email;
+    const id = req.params.id;
+
+    console.log({ email, id });
+
+    console.log("\n Getting data ...");
+    const result = await users.fetch({ id, columns: [] });
+    console.log("\nSuccessfully found !!! > ", result);
+    res.json(result);
+  } catch (error) {
+    res.json({ error });
+  }
+};
+
+const getUserDetails = async (req: Request, res: Response) => {
+  try {
+    console.log("\n getUserDetails test\n");
+
+    // const columns = req.params?.columns || [];
+    const id = req.params.id;
+
+    console.log("------", { id }, "-------");
+
+    console.log("\n Getting data ...");
+    const result = await userDetails.fetch({ user_id: id, columns: [] });
+    console.log("\nSuccessfully found user-details !!! > ", result);
     res.json(result);
   } catch (error) {
     res.json({ error });
@@ -148,4 +211,7 @@ export {
   nginxTest,
   getPostgresData,
   insertTest,
+  insertDetailsTest,
+  getUser,
+  getUserDetails,
 };

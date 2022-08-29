@@ -4,6 +4,7 @@ import { constants } from "..";
 const { redisUsername, redisPassword, redisHost, redisPort } = constants;
 
 const getRedisURL = () => {
+  // TODO : check this based on environment 
   if (redisUsername !== "local" && redisPassword !== "local") {
     return `redis://${redisUsername}:${redisPassword}@${redisHost}:${redisPort}`;
   }

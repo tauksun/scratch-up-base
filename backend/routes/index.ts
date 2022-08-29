@@ -4,7 +4,8 @@ import { userManagement, pages, tests } from "../api";
 const router = Router();
 
 // Testing //
-router.get("/test/:email", tests.insertTest);
+router.get("/test/:email/:id", tests.getUserDetails);
+router.get("/test/:email/:user_id", tests.insertDetailsTest);
 router.get("/get-postgres-data/:query", tests.getPostgresData);
 
 // User-Management //
