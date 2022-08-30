@@ -14,11 +14,11 @@ import { connectToPostgres, constants } from "../../helpers";
  * }
  * })
  */
-const create= async (params: {
-  id: String;
-  email: String;
-  password: String;
-}): Promise<{ success: Number; data: Object | String }> => {
+const create = async (params: {
+  id: string;
+  email: string;
+  password: string;
+}): Promise<{ data: object | string }> => {
   try {
     const table = constants.tables.users;
 
@@ -42,10 +42,9 @@ const create= async (params: {
     const result = await connection(table).insert(data);
 
     return {
-      success: 1,
       data: result,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.log("\n Error occured while creating user : ", error);
     throw error;
   }

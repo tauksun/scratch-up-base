@@ -43,6 +43,15 @@ async function seed(): Promise<any> {
     console.log("\n\n Seeding Database \n\n");
     // await executeInShell("./node_modules/knex/bin/cli.js seed:run");
     console.log("\n\n Database seeding ran successfully\n\n");
+    console.log(`
+        ###############################################
+
+        REMEMBER TO SET : seedDatabase = false in .env
+        to stop seeding database again after 
+        initial setup.
+        
+        #################################################
+    `)
     return;
   } catch (error) {
     console.log("\n\nError occured while seeding database : ", error);

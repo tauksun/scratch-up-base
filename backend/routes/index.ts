@@ -12,6 +12,11 @@ router.get("/get-postgres-data/:query", tests.getPostgresData);
 router.post("/sign-up", userManagement.signUp);
 router.post("/sign-in", userManagement.signIn);
 router.get("/logout", userManagement.logout);
+
+//////////////////////
+// Protected Routes //
+//////////////////////
+
 router.get("/is-session", userManagement.isSession);
 router.get("/user-data", userManagement.getUserData);
 

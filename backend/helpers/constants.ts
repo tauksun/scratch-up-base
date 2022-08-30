@@ -49,6 +49,15 @@ const redisPassword = environmentVariables.REDIS_PASSWORD || "";
 const users = "users";
 const user_details = "user_details";
 
+// Hash //
+const saltRounds = parseInt(environmentVariables.saltRounds || "10"); // Default to 10
+
+// JSON Web Token //
+const jwtSecretKey =
+  environmentVariables.jwtSecretKey ||
+  "not to be used default private key # only for local development";
+const jwtDefaultExpiresIn = 86400;
+
 const constants = {
   PORT: parseInt(environmentVariables.PORT || "") || 4200,
   builtInDocker,
@@ -67,6 +76,13 @@ const constants = {
   tables: {
     users,
     user_details,
+  },
+  hash: {
+    saltRounds,
+  },
+  jwt: {
+    secretKey: jwtSecretKey,
+    defaultExpiresIn: jwtDefaultExpiresIn,
   },
 };
 

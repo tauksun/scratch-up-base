@@ -22,9 +22,9 @@ type validColumns =
  * })
  */
 const fetch = async (params: {
-  user_id: String;
+  user_id: string;
   columns: validColumns[];
-}): Promise<{ success: Number; data: Object | String }> => {
+}): Promise<{ data: object | string }> => {
   try {
     const table = constants.tables.user_details;
 
@@ -49,10 +49,9 @@ const fetch = async (params: {
       .first();
 
     return {
-      success: 1,
       data: result,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.log("\n Error occured while fetching user details : ", error);
     throw error;
   }

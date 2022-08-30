@@ -23,10 +23,10 @@ type validColumns = "id" | "email" | "password" | "created_at" | "updated_at";
  * })
  */
 const fetch = async (params: {
-  id?: String;
-  email?: String;
+  id?: string;
+  email?: string;
   columns: validColumns[];
-}): Promise<{ success: Number; data: Object | String }> => {
+}): Promise<{ data: object | string }> => {
   try {
     const table = constants.tables.users;
 
@@ -53,10 +53,9 @@ const fetch = async (params: {
       .where(where);
 
     return {
-      success: 1,
       data: result,
     };
-  } catch (error) {
+  } catch (error: any) {
     console.log("\n Error occured while fetching user : ", error);
     throw error;
   }
