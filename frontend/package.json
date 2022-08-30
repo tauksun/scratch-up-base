@@ -21,7 +21,7 @@
   "scripts": {
     "start:local": "react-scripts start",
     "build:dock": "react-scripts build",
-    "test": "react-scripts test",
+    "test": "jest",
     "eject": "react-scripts eject",
     "start:dock": "node ./dist-server/server.js",
     "build:server": "tsc --project ./tsconfig.local.json",
@@ -46,6 +46,10 @@
     ]
   },
   "devDependencies": {
-    "@types/node": "^18.7.13"
+    "@types/node": "^18.7.13",
+    "@types/jest": "^28.0.0",
+    "jest": "^28.0.0",
+    "ts-jest": "^28.0.8",
+    "ts-node": "^10.9.1"
   }
 }
