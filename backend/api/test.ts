@@ -4,8 +4,6 @@ import { connectToRedis, connectToPostgres } from "../helpers";
 
 import { v4 } from "uuid";
 
-import { insert, select } from "../models/postgres";
-
 import { userDetails, users } from "../models";
 
 const testRoute = (req: Request, res: Response) => {
@@ -75,53 +73,53 @@ const nginxTest = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-const getPostgresData = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-) => {
-  try {
-    console.log("\n\n ### Hit on get postgres data ### \n\n");
+// const getPostgresData = async (
+//   req: Request,
+//   res: Response,
+//   next: NextFunction
+// ) => {
+//   try {
+//     console.log("\n\n ### Hit on get postgres data ### \n\n");
 
-    let result: any = null;
+//     let result: any = null;
 
-    console.log("\n\n --------- ### TEST ### Con to postgres ");
-    // const postgresConnection = await connectToPostgres();
+//     console.log("\n\n --------- ### TEST ### Con to postgres ");
+//     // const postgresConnection = await connectToPostgres();
 
-    // console.log("\n\n ----------- ### TEST ### reading from postgres ");
-    // const postgresResponse = await postgresConnection
-    //   .table("users")
-    //   .select("");
-    const query = JSON.parse(req.params.query);
-    const where = query.where;
-    const orWhere = query.orWhere;
+//     // console.log("\n\n ----------- ### TEST ### reading from postgres ");
+//     // const postgresResponse = await postgresConnection
+//     //   .table("users")
+//     //   .select("");
+//     const query = JSON.parse(req.params.query);
+//     const where = query.where;
+//     const orWhere = query.orWhere;
 
-    const finder: {
-      table: string;
-      columns: Array<String>;
-      where?: any;
-      orWhere?: any;
-    } = {
-      table: "users",
-      columns: ["email"],
-    };
+//     const finder: {
+//       table: string;
+//       columns: Array<String>;
+//       where?: any;
+//       orWhere?: any;
+//     } = {
+//       table: "users",
+//       columns: ["email"],
+//     };
 
-    if (where) {
-      finder.where = where;
-    }
-    if (orWhere) {
-      finder.orWhere = orWhere;
-    }
+//     if (where) {
+//       finder.where = where;
+//     }
+//     if (orWhere) {
+//       finder.orWhere = orWhere;
+//     }
 
-    const postgresResponse = await select(finder);
-    console.log("\n\n Got this from postgres : ", postgresResponse);
-    result = "Succcessfully read from  postgres : " + postgresResponse;
-    res.json({ result });
-  } catch (error) {
-    console.log("ERRRRor > ", error);
-    res.json({ error });
-  }
-};
+//     const postgresResponse = await select(finder);
+//     console.log("\n\n Got this from postgres : ", postgresResponse);
+//     result = "Succcessfully read from  postgres : " + postgresResponse;
+//     res.json({ result });
+//   } catch (error) {
+//     console.log("ERRRRor > ", error);
+//     res.json({ error });
+//   }
+// };
 
 // 27082022 //
 const insertTest = async (req: Request, res: Response) => {
@@ -209,7 +207,6 @@ export {
   redisTestGETDATA,
   postgresTest,
   nginxTest,
-  getPostgresData,
   insertTest,
   insertDetailsTest,
   getUser,
