@@ -1,3 +1,4 @@
 node_modules
 .env
 run-only.local.yml
+tests/coverage
