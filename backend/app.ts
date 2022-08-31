@@ -1,8 +1,13 @@
 import express, { Application } from "express";
 
 // Load environment variables
-import dotenv from "dotenv";
-dotenv.config();
+import {envLoader} from "./helpers";
+
+//######################################
+console.log("Loading env")
+envLoader()
+console.log(process.env)
+//########################################
 
 // Custom Modules
 import {

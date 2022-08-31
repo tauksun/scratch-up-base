@@ -1,4 +1,5 @@
-// Tunnel
+// Tunnel //
+import envLoader from "./loadEnvironmentVariables";
 import constants from "./constants";
 import ask from "./terminal_functions/askPlease";
 import executeInShell from "./terminal_functions/executeInShell";
@@ -15,6 +16,7 @@ import {
 } from "./auth_functions/jwt_functions";
 
 export {
+  envLoader,
   constants,
   ask,
   executeInShell,
