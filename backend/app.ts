@@ -18,9 +18,6 @@ import { corsHandler, headersHandler } from "./middlewares";
 // Routes/Apis
 import router from "./routes";
 
-//>>>>>>>>>> Delete this after fixing middlewares implementation >>>>>>>>>//
-import cors from "cors";
-
 // Initialize application
 const app: Application = express();
 const PORT = constants.PORT;
@@ -36,8 +33,7 @@ const expressServer = async () => {
 
   // Middlewares
   app.use(headersHandler);
-  //------ TODO:------//
-  app.use(cors());
+  app.use(corsHandler());
 
   /////////////
   // Routes //

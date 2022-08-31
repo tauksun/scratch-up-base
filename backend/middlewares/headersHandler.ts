@@ -7,4 +7,4 @@ const headersHandler = (req: Request, res: Response, next: NextFunction) => {
   next();
 };
 
-export { headersHandler };
+export default headersHandler ;

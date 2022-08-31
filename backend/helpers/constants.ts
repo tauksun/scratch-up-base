@@ -61,7 +61,8 @@ const jwtDefaultExpiresIn = 86400;
 const constants = {
   PORT: parseInt(environmentVariables.PORT || "") || 4200,
   builtInDocker,
-  allowedOrigins: JSON.parse(environmentVariables.CORS || "{}")?.allowedOrigins,
+  allowedOrigins:
+    JSON.parse(environmentVariables.CORS || "{}")?.allowedOrigins || [],
   postgresHost: getPostgresHost(),
   postgresUser,
   postgresPassword,

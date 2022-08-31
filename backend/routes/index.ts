@@ -7,6 +7,10 @@ const router = Router();
 router.get("/test/:email/:id", tests.getUserDetails);
 router.get("/test/:email/:user_id", tests.insertDetailsTest);
 
+/////////////////
+// Open Routes //
+/////////////////
+
 // User-Management //
 router.post("/sign-up", userManagement.signUp);
 router.post("/sign-in", userManagement.signIn);
