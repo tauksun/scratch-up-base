@@ -1,13 +1,9 @@
 import express, { Application } from "express";
 
 // Load environment variables
-import {envLoader} from "./helpers";
-
-//######################################
-console.log("Loading env")
-envLoader()
-console.log(process.env)
-//########################################
+import envLoader from "./loadEnvironmentVariables";
+// Change the path to ".env" or your custom file
+envLoader({ path: "./local.env.local" });
 
 // Custom Modules
 import {

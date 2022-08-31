@@ -4,16 +4,12 @@ import { constants } from "..";
 const { redisUsername, redisPassword, redisHost, redisPort } = constants;
 
 const getRedisURL = () => {
-  // TODO : check this based on environment 
+  // TODO : check this based on environment
   if (redisUsername !== "local" && redisPassword !== "local") {
     return `redis://${redisUsername}:${redisPassword}@${redisHost}:${redisPort}`;
   }
   return `redis://${redisHost}:${redisPort}`;
 };
-
-const client = createClient({
-  url: getRedisURL(),
-});
 
 let connectionToRedis: any = null;
 
@@ -24,6 +20,11 @@ const connect = async () => {
       return connectionToRedis;
     }
     console.log("\n\nEstablishing connection to Redis ...");
+
+    const client = createClient({
+      url: getRedisURL(),
+    });
+
     await client.connect();
     console.log("\n\nSuccessfully connected to Redis.");
 

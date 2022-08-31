@@ -32,7 +32,7 @@ function envLoader(params?: { stage?: string; path?: string }) {
     const stage = params?.stage;
     const pathToCustomEnv = params?.path;
 
-    const basePath = path.join(__dirname, "../../");
+    const basePath = __dirname;
 
     const pathToStage = stage
       ? path.join(basePath, `./.env.${stage}`)
@@ -46,17 +46,36 @@ function envLoader(params?: { stage?: string; path?: string }) {
       throw `Could not find config file at ${pathToEnv}`;
     }
 
-    ////////////////////////////////////////////////
-    console.log(
-      `\n\n###############\n\n ${{
-        stage,
-        pathToCustomEnv,
-        basePath,
-        pathToStage,
-        pathToEnv,
-        isFileExists,
-      }}`
-    );
+    // Show user to change path or use .env instead of local.env.local //
+    if (pathToEnv === "./local.env.local") {
+      console.log(`
+      ----------------------------------
+                IMPORTANT
+      ----------------------------------
+
+      Change path to envLoader function in app.ts from "./local.env.local" to "./.env" 
+      or to your custom .env file.
+
+      This is set by default so as to run app & share the configuration.
+
+      You can create your own .env from scratch or 
+      to start : 
+      
+      1) create a .env file
+      2) copy local.env.local content to .env
+      3) Remove the object parameter passed to envLoader in app.ts such as : envLoader()
+
+          This will load variables from .env file.
+      
+      You can also create custom .env files for different staging environments, 
+      to start look at the definition & examples of envLoader in app.ts
+
+      ----------------------------------
+                IMPORTANT      
+      ----------------------------------
+      `);
+    }
+
     dotenv.config({ path: pathToEnv });
     return;
   } catch (error) {
