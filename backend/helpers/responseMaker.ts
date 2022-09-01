@@ -1,24 +1,8 @@
 import { Request, Response } from "express";
-
-interface Isuccess {
-  code: Number;
-  message?: String;
-  data?: any;
-  req: Request;
-  res: Response;
-}
-
-interface Ierror {
-  code: Number;
-  message?: String;
-  error: any;
-  req: Request;
-  res: Response;
-}
+import { pages } from "../api";
 
 /**
  *
- * @param params
  * @description
  * Send successful response
  * @example
@@ -32,7 +16,13 @@ interface Ierror {
  * }
  * })
  */
-function successResponse(params: Isuccess) {
+function successResponse(params: {
+  code: Number;
+  message?: String;
+  data?: any;
+  req: Request;
+  res: Response;
+}) {
   const { req, res, code, message = null, data = null } = params;
 
   // Send Response
@@ -41,24 +31,65 @@ function successResponse(params: Isuccess) {
 
 /**
  *
- * @param params
  * @description
- * Send Error in response
+ * Send Error in response \
+ * To send page for an error instead of json, set httpResponse to true
+ *
  * @example
+ * // To send json response
  * errorResponse({
  * req,
  * res,
  * code:500,
+ * httpResponse: false;
  * error:"descriptive error",
  * message:"descriptive message"
  * })
  *
+ * // To send http response for 400
+ * errorResponse({
+ * req,
+ * res,
+ * code:400,
+ * httpResponse: true;
+ * })
  */
-function errorResponse(params: Ierror) {
-  const { req, res, code, error, message = null } = params;
+function errorResponse(params: {
+  req: Request;
+  res: Response;
+  code: number;
+  httpResponse?: boolean;
+  message?: string;
+  error?: any;
+}) {
+  let {
+    req,
+    res,
+    code,
+    httpResponse = false,
+    error = null,
+    message = null,
+  } = params;
 
-  // Send Response
-  res.json({ code, error, message });
+  // Send Json Response
+  if (!httpResponse) {
+    return res.json({ code, error, message });
+  }
+
+  // Send Http Response
+  switch (code) {
+    case 400:
+      return pages.badRequest(req, res);
+
+    case 404:
+      return pages.notFound(req, res);
+
+    case 500:
+      return pages.internalServerError(req, res);
+
+    default:
+      return pages.internalServerError(req, res);
+  }
 }
 
 export { successResponse, errorResponse };

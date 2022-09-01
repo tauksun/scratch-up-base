@@ -1,5 +1,6 @@
 import Router from "express";
 import { userManagement, pages, tests } from "../api";
+import { authenticate } from "../middlewares";
 
 const router = Router();
 
@@ -14,14 +15,18 @@ router.get("/test/:email/:user_id", tests.insertDetailsTest);
 // User-Management //
 router.post("/sign-up", userManagement.signUp);
 router.post("/sign-in", userManagement.signIn);
-router.get("/logout", userManagement.logout);
+
 
 //////////////////////
 // Protected Routes //
 //////////////////////
 
+// Authentication Middleware //
+router.use(authenticate);
+
 router.get("/is-session", userManagement.isSession);
 router.get("/user-data", userManagement.getUserData);
+router.get("/logout", userManagement.logout);
 
 // Uploads //
 
