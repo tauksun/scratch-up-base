@@ -41,7 +41,7 @@ const expressServer = async () => {
   // eg : authentication middleware used for protected routes //
 
   // Modify HTTP Headers
-  app.use(headersHandler);
+  app.use(headersHandler());
 
   // CORS
   app.use(corsHandler());

@@ -14,6 +14,7 @@ const corsHandler = () => {
   const corsOptions: CorsOptions = {
     //@ts-ignore
     origin: function (origin: string, callback) {
+      // Remove !origin to block server to server access
       if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
         return callback(null, true);
       } else {
