@@ -13,6 +13,7 @@ import {
   generateJWT,
   verifyJWT,
 } from "./auth_functions/jwt_functions";
+import cookieFetcher from "./cookie_functions/get-cookie";
 
 export {
   constants,
@@ -29,4 +30,5 @@ export {
   decodeJWT,
   generateJWT,
   verifyJWT,
+  cookieFetcher,
 };

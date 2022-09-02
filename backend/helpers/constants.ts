@@ -58,6 +58,9 @@ const jwtSecretKey =
   "not to be used default private key # only for local development";
 const jwtDefaultExpiresIn = 86400;
 
+// Default user token name //
+const userTokenName = environmentVariables.userTokenName || "userId";
+
 const constants = {
   PORT: parseInt(environmentVariables.PORT || "") || 4200,
   builtInDocker,
@@ -85,6 +88,7 @@ const constants = {
     secretKey: jwtSecretKey,
     defaultExpiresIn: jwtDefaultExpiresIn,
   },
+  userTokenName,
 };
 
 export default constants;
