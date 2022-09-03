@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { constants, errorResponse, getUserToken } from "../../helpers";
 
 /**
  * @description
@@ -10,6 +11,16 @@ import { NextFunction, Request, Response } from "express";
  */
 const authenticate = (req: Request, res: Response, next: NextFunction) => {
   try {
+    //////////////////////////////////////////////
+    console.log("\n-- Going through authentication middleware --\n");
+
+    // Get user token from request //
+    const userTokenName = constants.userTokenName;
+    const userToken = getUserToken({ req, userTokenName });
+
+    if (!userToken) {
+      throw `No ${userTokenName} found`;
+    }
 
     // TODO :
     // Fetch the userId using function from helpers > get user token
@@ -18,23 +29,17 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
     //      If not present > throw error
     // otherwise > call next
 
-
-
     // Fetch user auth id from cookies
 
-    
-
-    // Validate session with db 
-
-
-
+    // Validate session with db
 
     ////////////// for now ///////////////////
-    console.log("\n-- Going through authentication middleware --\n");
     next();
   } catch (error) {
+    // Responding with a bad request
+    // user can be redirected here to the login page //
     console.log("\n Error occured while authenticating user : ", error);
-    // To respond or not to
+    errorResponse({ req, res, code: 400, error: "Not Authenticated" });
   }
 };
 

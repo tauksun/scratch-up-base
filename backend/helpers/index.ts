@@ -14,6 +14,8 @@ import {
   verifyJWT,
 } from "./auth_functions/jwt_functions";
 import cookieFetcher from "./cookie_functions/get-cookie";
+import getUserToken from "./cookie_functions/get-user-token";
+import setCookie from "./cookie_functions/set-cookie";
 
 export {
   constants,
@@ -31,4 +33,6 @@ export {
   generateJWT,
   verifyJWT,
   cookieFetcher,
+  getUserToken,
+  setCookie,
 };

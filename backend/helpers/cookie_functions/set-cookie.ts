@@ -88,22 +88,16 @@ const setCookie = (params: {
         SameSite,
         path,
       } = cookieData;
-      let cookie = `${cookieName}=${cookieValue}; HttpOnly=${httpOnly}, Secure=${secure}, ${
-        expires ? "Expires=" + expires + "," : ""
-      } ${maxAge ? "Max-Age=" + maxAge + "," : ""} ${
-        domain ? "Domain=" + domain + "," : ""
-      } ${path ? "Path=" + path + "," : ""} ${
+      let cookie = `${cookieName}=${cookieValue}; HttpOnly=${httpOnly}; Secure=${secure}; ${
+        expires ? "Expires=" + expires + ";" : ""
+      } ${maxAge ? "Max-Age=" + maxAge + ";" : ""} ${
+        domain ? "Domain=" + domain + ";" : ""
+      } ${path ? "Path=" + path + ";" : ""} ${
         SameSite ? "SameSite=" + SameSite : ""
       }`;
 
       cookieArray.push(cookie);
     }
-
-    ///////////////////////////////////////////////////////////////////////////
-
-    console.log({ cookies, cookieArray });
-
-    ///////////////////////////////////////////////////////////////////////////
 
     res.setHeader("set-cookie", cookieArray);
 
