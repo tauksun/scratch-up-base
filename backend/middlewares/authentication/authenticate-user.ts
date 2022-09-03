@@ -1,18 +1,25 @@
 import { NextFunction, Request, Response } from "express";
 import { constants, errorResponse, getUserToken } from "../../helpers";
+import validateSession from "./db-session-checker";
 
 /**
  * @description
  * Fetches (user authentication Id)cookie from request \
  * Checks with db(eg : redis) for the session of the user
  *
- * Upon failure, responds to client with authentication error
+ * Upon failure, responds to client with authentication error \
+ * This can be used to redirect un-authenticated users to login/signup page
  *
  */
-const authenticate = (req: Request, res: Response, next: NextFunction) => {
+const authenticate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     //////////////////////////////////////////////
     console.log("\n-- Going through authentication middleware --\n");
+    //////////////////////////////////////////////
 
     // Get user token from request //
     const userTokenName = constants.userTokenName;
@@ -22,18 +29,13 @@ const authenticate = (req: Request, res: Response, next: NextFunction) => {
       throw `No ${userTokenName} found`;
     }
 
-    // TODO :
-    // Fetch the userId using function from helpers > get user token
-    //      if not present throw error
-    // Hit Redis to check for valid user session
-    //      If not present > throw error
-    // otherwise > call next
+    // Check session in db //
+    const isSession = await validateSession({ userToken });
 
-    // Fetch user auth id from cookies
+    if (!isSession) {
+      throw "Not a valid session";
+    }
 
-    // Validate session with db
-
-    ////////////// for now ///////////////////
     next();
   } catch (error) {
     // Responding with a bad request
