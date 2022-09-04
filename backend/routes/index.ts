@@ -1,10 +1,14 @@
 import Router from "express";
-import { userManagement, pages, tests } from "../api";
+import { pages, tests } from "../api";
 import { authenticate } from "../middlewares";
+import openRouter from "./open-routes";
+import protectedRouter from "./protected-routes";
 
 const router = Router();
 
+/////////////
 // Testing //
+/////////////
 router.get("/test/:email/:id", tests.getUserDetails);
 router.get("/test/:email/:user_id", tests.insertDetailsTest);
 
@@ -12,9 +16,7 @@ router.get("/test/:email/:user_id", tests.insertDetailsTest);
 // Open Routes //
 /////////////////
 
-// User-Management //
-router.post("/sign-up", userManagement.signUp);
-router.post("/sign-in", userManagement.signIn);
+router.use(openRouter);
 
 //////////////////////
 // Protected Routes //
@@ -23,11 +25,7 @@ router.post("/sign-in", userManagement.signIn);
 // Authentication Middleware //
 router.use(authenticate);
 
-router.get("/is-session", userManagement.isSession);
-router.get("/user-data", userManagement.getUserData);
-router.get("/logout", userManagement.logout);
-
-// Uploads //
+router.use(protectedRouter);
 
 // Not Found //
 /**

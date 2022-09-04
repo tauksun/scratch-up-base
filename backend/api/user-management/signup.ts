@@ -15,6 +15,7 @@ const signUp = async (req: Request, res: Response) => {
     // Hash Password
 
     // Store to DB
+    res.send("signed -- up");
   } catch (error) {
     console.log("\nError occured during sign up : ", error);
     // errorResponse(////////////////////////)

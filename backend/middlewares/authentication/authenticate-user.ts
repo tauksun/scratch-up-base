@@ -17,9 +17,11 @@ const authenticate = async (
   next: NextFunction
 ) => {
   try {
+    
     //////////////////////////////////////////////
     console.log("\n-- Going through authentication middleware --\n");
     //////////////////////////////////////////////
+
 
     // Get user token from request //
     const userTokenName = constants.userTokenName;
