@@ -60,6 +60,12 @@ const jwtDefaultExpiresIn = 86400;
 
 // Default user token name //
 const userTokenName = environmentVariables.userTokenName || "userId";
+const redisSessionHashKey =
+  environmentVariables.redisSessionHashKey || "session";
+const redisSessionExpiryInSeconds = parseInt(
+  environmentVariables.redisSessionExpiryInSeconds || "86400"
+);
+const redisCacheHashKey = environmentVariables.redisCacheHashKey || "cache";
 
 const constants = {
   PORT: parseInt(environmentVariables.PORT || "") || 4200,
@@ -89,6 +95,13 @@ const constants = {
     defaultExpiresIn: jwtDefaultExpiresIn,
   },
   userTokenName,
+  session: {
+    redisHashKey: redisSessionHashKey,
+    expiryInSeconds: redisSessionExpiryInSeconds,
+  },
+  cache: {
+    redisHashKey: redisCacheHashKey,
+  },
 };
 
 export default constants;

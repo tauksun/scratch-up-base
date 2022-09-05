@@ -1,3 +1,10 @@
+/**
+ * @description
+ * This file creates an abstract over the functions
+ * provided by the redis client library,
+ * such that the client library can be replaced
+ * with another without affecting the project/code structure.
+ */
 import { connectToRedis } from "../../helpers";
 
 /**

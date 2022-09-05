@@ -1,3 +1,9 @@
-import * as hashFunctions from "./hash_functions";
+import {
+  createField,
+  fetchField,
+  fetchAllFields,
+  updateField,
+  deleteField,
+} from "./hash_functions";
 
-export { hashFunctions };
+export { createField, fetchField, fetchAllFields, updateField, deleteField };
