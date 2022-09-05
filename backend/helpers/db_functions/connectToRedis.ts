@@ -1,4 +1,4 @@
-import { createClient } from "redis";
+import { createClient, RedisClientType } from "redis";
 import { constants } from "..";
 
 const { redisUsername, redisPassword, redisHost, redisPort } = constants;
@@ -11,7 +11,7 @@ const getRedisURL = () => {
   return `redis://${redisHost}:${redisPort}`;
 };
 
-let connectionToRedis: any = null;
+let connectionToRedis: RedisClientType;
 
 const connect = async () => {
   try {
@@ -21,14 +21,13 @@ const connect = async () => {
     }
     console.log("\n\nEstablishing connection to Redis ...");
 
-    const client = createClient({
+    connectionToRedis = createClient({
       url: getRedisURL(),
     });
 
-    await client.connect();
+    await connectionToRedis.connect();
     console.log("\n\nSuccessfully connected to Redis.");
 
-    connectionToRedis = client;
     return connectionToRedis;
   } catch (error) {
     console.log("\n\nError occured while connecting to Redis : ", error);

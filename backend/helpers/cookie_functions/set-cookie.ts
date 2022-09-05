@@ -88,11 +88,11 @@ const setCookie = (params: {
         SameSite,
         path,
       } = cookieData;
-      let cookie = `${cookieName}=${cookieValue}; HttpOnly=${httpOnly}; Secure=${secure}; ${
+      let cookie = `${cookieName}=${cookieValue}; HttpOnly=${httpOnly}; Secure=${secure};${
         expires ? "Expires=" + expires + ";" : ""
-      } ${maxAge ? "Max-Age=" + maxAge + ";" : ""} ${
+      }${maxAge ? "Max-Age=" + maxAge + ";" : ""}${
         domain ? "Domain=" + domain + ";" : ""
-      } ${path ? "Path=" + path + ";" : ""} ${
+      }${path ? "Path=" + path + ";" : ""}${
         SameSite ? "SameSite=" + SameSite : ""
       }`;
 

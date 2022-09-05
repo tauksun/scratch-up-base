@@ -9,6 +9,7 @@ const router = Router();
 /////////////
 // Testing //
 /////////////
+router.get("/redis-test", tests.redisInsertTest);
 router.get("/test/:email/:id", tests.getUserDetails);
 router.get("/test/:email/:user_id", tests.insertDetailsTest);
 

@@ -5,6 +5,7 @@ import { connectToRedis, connectToPostgres } from "../helpers";
 import { v4 } from "uuid";
 
 import { userDetails, users } from "../models";
+import { hashFunctions } from "../models/redis";
 
 const testRoute = (req: Request, res: Response) => {
   console.log("\n\n### Hit on test route ### \n\n");
@@ -201,6 +202,19 @@ const getUserDetails = async (req: Request, res: Response) => {
   }
 };
 
+const redisInsertTest = async (req: Request, res: Response) => {
+  try {
+    console.log("\n redis insert test\n");
+    const result = await hashFunctions.fetchAllFields({
+      key: "test",
+      // field: "name",
+      // value: "Harsh",
+    });
+    res.json(result);
+  } catch (error) {
+    res.json({ error });
+  }
+};
 export {
   testRoute,
   redisTest,
@@ -211,4 +225,5 @@ export {
   insertDetailsTest,
   getUser,
   getUserDetails,
+  redisInsertTest,
 };
