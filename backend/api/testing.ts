@@ -4,8 +4,8 @@ import { connectToRedis, connectToPostgres } from "../helpers";
 
 import { v4 } from "uuid";
 
-import { userDetails, users } from "../models";
-import { hashFunctions } from "../models/";
+import { userDetails, users } from "../services";
+import { hashFunctions } from "../services";
 
 const testRoute = (req: Request, res: Response) => {
   console.log("\n\n### Hit on test route ### \n\n");

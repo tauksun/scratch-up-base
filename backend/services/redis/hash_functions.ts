@@ -80,18 +80,6 @@ const fetchField = async (params: {
   }
 };
 
-const updateField = async (params: {}): Promise<any> => {
-  try {
-    //
-  } catch (error) {
-    console.log(
-      "\n Error occured while updating hash field in redis : ",
-      error
-    );
-    throw error;
-  }
-};
-
 /**
  *
  * @description
@@ -117,4 +105,4 @@ const deleteField = async (params: {
   }
 };
 
-export { createField, fetchField, fetchAllFields, updateField, deleteField };
+export { createField, fetchField, fetchAllFields, deleteField };

@@ -33,7 +33,7 @@ router.use(protectedRouter);
  * @description
  * All unknown routes fall under authentication
  * ie., only authenticated users will be able to navigate to some random route \
- * all other visitors, when navigating to unkown routes will be blocked by authentication middleware
+ * all other visitors, when navigating to unknown routes will be blocked by authentication middleware
  */
 router.all("/*", pages.notFound);
 

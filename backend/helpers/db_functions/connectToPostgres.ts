@@ -1,4 +1,4 @@
-import knex from "knex";
+import knex, { Knex } from "knex";
 import { constants } from "..";
 
 const {
@@ -9,7 +9,7 @@ const {
   postgresPort,
 } = constants;
 
-let connectionToPostgres: any = null;
+let connectionToPostgres: Knex;
 
 const connect = async () => {
   try {
@@ -18,7 +18,7 @@ const connect = async () => {
       return connectionToPostgres;
     }
     console.log("\n\nEstablishing connection to Postgres...");
-    const connection = knex({
+    connectionToPostgres = knex({
       client: "pg",
       connection: {
         host: postgresHost,
@@ -28,10 +28,9 @@ const connect = async () => {
         database: postgresDB,
       },
     });
-    connectionToPostgres = connection;
     return connectionToPostgres;
   } catch (error) {
-    console.log("\n\nError occured while connection to postgres : ", error);
+    console.log("\n\nError occured while connecting to postgres : ", error);
     return connectionToPostgres;
   }
 };
