@@ -59,7 +59,7 @@ function errorResponse(params: {
   res: Response;
   code: number;
   httpResponse?: boolean;
-  message?: string;
+  message?: any;
   error?: any;
 }) {
   let {

@@ -1,7 +1,12 @@
 import { Request, Response } from "express";
 import { sessionFunctions, users } from "../../services";
 import uuid from "uuid";
-import { successResponse, errorResponse, generateHash } from "../../helpers";
+import {
+  successResponse,
+  errorResponse,
+  generateHash,
+  setCookie,
+} from "../../helpers";
 
 const signUp = async (req: Request, res: Response) => {
   try {
@@ -38,7 +43,7 @@ const signUp = async (req: Request, res: Response) => {
     // Store to DB
     const v4 = uuid.v4;
     const userId = v4();
-    const {} = await users.create({
+    const result = await users.create({
       id: userId,
       email,
       password: hashedPassword,
@@ -49,17 +54,28 @@ const signUp = async (req: Request, res: Response) => {
 
     const sessionId = session.id;
 
+    // store sessionId as cookie
+    setCookie({
+      res,
+      cookies: [
+        {
+          cookieName: "sess",
+          cookieValue: sessionId,
+          httpOnly: true,
+          secure: true,
+          SameSite: "Strict",
+          path: "/",
+        },
+      ],
+    });
+
     // Return
     return successResponse({
       req,
       res,
       code: 200,
       message: "User created successfully",
-      data: {
-        session: {
-          id: sessionId,
-        },
-      },
+      data: {},
     });
   } catch (error) {
     console.log("\nError occured during sign up : ", error);
@@ -67,7 +83,7 @@ const signUp = async (req: Request, res: Response) => {
       req,
       res,
       code: 500,
-      error: "failed to create user",
+      error: "failed to signup",
     });
   }
 };

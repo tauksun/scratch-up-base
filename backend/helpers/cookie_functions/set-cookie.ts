@@ -1,5 +1,11 @@
 import { Response } from "express";
 
+/**
+ *
+ * @description
+ * Recieves **res** & an array of objects in params to set cookie/s, \
+ * Passing multiple objects sets multiple cookies
+ */
 const setCookie = (params: {
   res: Response;
   cookies: {
@@ -43,7 +49,7 @@ const setCookie = (params: {
      *  Controls whether or not a cookie is sent with cross-site requests, providing some protection against cross-site request forgery attacks (CSRF). \
      *  Defaults to Lax.
      *
-     * **Strict** means that the browser sends the cookie only for same-site requests, that is, requests originating from the same site that set the cookie. \
+     * **Strict** means that the browser sends the cookie only for same-site requests, that is, requests originating from the same site that set the cookie.
      *
      * **Lax** means that the cookie is not sent on cross-site requests, such as on requests to load images or frames, but is sent when a user is navigating to the origin site from an external site (for example, when following a link)
      *
@@ -55,7 +61,7 @@ const setCookie = (params: {
     SameSite?: "Strict" | "Lax" | "None";
     /**
      * @description
-     * Indicates the number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately. \
+     * Indicates the number of seconds until the cookie expires. A zero or negative number will expire the cookie immediately.
      *
      * If both Expires and Max-Age are set, Max-Age has precedence.
      */
@@ -63,7 +69,7 @@ const setCookie = (params: {
     /**
      * @description
      * Indicates the maximum lifetime of the cookie as an HTTP-date timestamp. \
-     * If unspecified, the cookie becomes a session cookie. \
+     * If unspecified, the cookie becomes a session cookie.
      *
      * When an Expires date is set, the deadline is relative to the client the cookie is being set on, not the server.
      */

@@ -26,7 +26,15 @@ const fetch = async (params: {
   id?: string;
   email?: string;
   columns: validColumns[];
-}): Promise<{ data: object | string }> => {
+}): Promise<{
+  data: {
+    id?: string;
+    email?: string;
+    password?: string;
+    updated_at?: string;
+    created_at?: string;
+  };
+}> => {
   try {
     const table = constants.tables.users;
 
@@ -48,7 +56,7 @@ const fetch = async (params: {
     const where = {
       [key]: value,
     };
-    const result = await connection(table)
+    const result: {} = await connection(table)
       .select(...columns)
       .where(where);
 

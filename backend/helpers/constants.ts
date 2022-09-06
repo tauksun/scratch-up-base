@@ -59,7 +59,7 @@ const jwtSecretKey =
 const jwtDefaultExpiresIn = 86400;
 
 // Default user token name //
-const userTokenName = environmentVariables.userTokenName || "userId";
+const userTokenName = environmentVariables.userTokenName || "sess";
 const redisSessionHashKey =
   environmentVariables.redisSessionHashKey || "session";
 const redisSessionExpiryInSeconds = parseInt(
