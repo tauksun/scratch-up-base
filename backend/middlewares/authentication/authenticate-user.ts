@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { Request, Response, NextFunction } from "express";
 import { constants, errorResponse, getUserToken } from "../../helpers";
 import validateSession from "./db-session-checker";
 
@@ -17,26 +17,29 @@ const authenticate = async (
   next: NextFunction
 ) => {
   try {
-    
     //////////////////////////////////////////////
     console.log("\n-- Going through authentication middleware --\n");
     //////////////////////////////////////////////
 
-
     // Get user token from request //
     const userTokenName = constants.userTokenName;
-    const userToken = getUserToken({ req, userTokenName });
+    const sessionId = getUserToken({ req, userTokenName });
 
-    if (!userToken) {
-      throw `No ${userTokenName} found`;
+    if (!sessionId) {
+      throw `No ${userTokenName} found in request`;
     }
 
     // Check session in db //
-    const isSession = await validateSession({ userToken });
+    const session = await validateSession({ sessionId });
 
-    if (!isSession) {
+    if (!session) {
       throw "Not a valid session";
     }
+
+    // Store session data in response.locals //
+    // The variables set on res.locals are available within a single request-response cycle,
+    // and will not be shared between requests.
+    res.locals.session = { sessionId, ...session };
 
     next();
   } catch (error) {

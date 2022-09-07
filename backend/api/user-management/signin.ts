@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
   compareHash,
+  constants,
   errorResponse,
   setCookie,
   successResponse,
@@ -61,11 +62,12 @@ const signIn = async (req: Request, res: Response) => {
     const sessionId = session.id;
 
     // store sessionId as cookie
+    const userTokenName = constants.userTokenName;
     setCookie({
       res,
       cookies: [
         {
-          cookieName: "sess",
+          cookieName: userTokenName,
           cookieValue: sessionId,
           httpOnly: true,
           secure: true,

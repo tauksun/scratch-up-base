@@ -24,7 +24,16 @@ type validColumns =
 const fetch = async (params: {
   user_id: string;
   columns: validColumns[];
-}): Promise<{ data: object | string }> => {
+}): Promise<{
+  data: {
+    user_id?: string;
+    username?: string;
+    phone_number?: string;
+    profile_photo?: string;
+    created_at?: string;
+    updated_at?: string;
+  };
+}> => {
   try {
     const table = constants.tables.user_details;
 

@@ -1,29 +1,29 @@
+import { sessionFunctions } from "../../services";
+
 /**
  *
  * @description
  * Returns true for a valid session, & false for invalid
  */
 const validateSession = async (params: {
-  userToken: string;
-}): Promise<boolean> => {
+  sessionId: string;
+}): Promise<{
+  session: object;
+} | null> => {
   try {
-    const usertoken = params.userToken;
+    const sessionId = params.sessionId;
 
-    let isSession = false;
-    //
-    // on checking with Redis > check the expiry also
-    //
-    // Return false for an invalid session
+    const { session } = await sessionFunctions.getSession({ sessionId });
 
-    console.log("\n--------- return true for now #testing ---------------\n");
-    return true;
+    /////////////////////////////////////////
+    // Check expiry //
+    ////////////////////////////////////////
 
-    if (!isSession) {
-      return false;
+    if (!session) {
+      return null;
     }
 
-    // Return true for a valid session
-    return true;
+    return { session };
   } catch (error) {
     console.log("\n Error occured while validating session with db : ", error);
     throw error;

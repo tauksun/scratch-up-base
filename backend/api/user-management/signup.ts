@@ -6,6 +6,7 @@ import {
   errorResponse,
   generateHash,
   setCookie,
+  constants,
 } from "../../helpers";
 
 const signUp = async (req: Request, res: Response) => {
@@ -55,11 +56,12 @@ const signUp = async (req: Request, res: Response) => {
     const sessionId = session.id;
 
     // store sessionId as cookie
+    const userTokenName = constants.userTokenName;
     setCookie({
       res,
       cookies: [
         {
-          cookieName: "sess",
+          cookieName: userTokenName,
           cookieValue: sessionId,
           httpOnly: true,
           secure: true,
