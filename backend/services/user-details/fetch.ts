@@ -51,6 +51,7 @@ const fetch = async (params: {
     const where = {
       user_id,
     };
+    
     const result = await connection(table)
       .select(...columns)
       .where(where)

@@ -56,9 +56,11 @@ const fetch = async (params: {
     const where = {
       [key]: value,
     };
+
     const result: {} = await connection(table)
       .select(...columns)
-      .where(where);
+      .where(where)
+      .first();
 
     return {
       data: result,

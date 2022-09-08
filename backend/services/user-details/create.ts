@@ -25,12 +25,7 @@ const createUserDetails = async (params: {
   try {
     const table = constants.tables.user_details;
 
-    const {
-      user_id,
-      username,
-      phone_number = null,
-      profile_photo = null,
-    } = params;
+    const { user_id, username, phone_number = "", profile_photo = "" } = params;
 
     // Validate
     if (!(table && user_id && username)) {

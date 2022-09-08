@@ -24,7 +24,8 @@ const signIn = async (req: Request, res: Response) => {
       columns: ["id", "password"],
     });
 
-    const userId = userData.id || null;
+    const userId = userData?.id || null;
+
     if (!userId) {
       return errorResponse({
         req,

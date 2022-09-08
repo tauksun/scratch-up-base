@@ -30,12 +30,13 @@ const authenticate = async (
     }
 
     // Check session in db //
-    const session = await validateSession({ sessionId });
+    const result = await validateSession({ sessionId });
 
-    if (!session) {
+    if (!result) {
       throw "Not a valid session";
     }
 
+    const session = result.session;
     // Store session data in response.locals //
     // The variables set on res.locals are available within a single request-response cycle,
     // and will not be shared between requests.

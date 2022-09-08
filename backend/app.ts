@@ -31,6 +31,9 @@ const expressServer = async () => {
   await checkAndMigrate();
   await checkAndSeed();
 
+  // JSON Parser
+  app.use(express.json());
+
   /////////////////
   // Middlewares //
   ////////////////

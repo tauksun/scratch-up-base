@@ -1,6 +1,6 @@
 import { Request, Response } from "express";
-import { sessionFunctions, users } from "../../services";
-import uuid from "uuid";
+import { sessionFunctions, userDetails, users } from "../../services";
+import * as uuid from "uuid";
 import {
   successResponse,
   errorResponse,
@@ -15,10 +15,13 @@ const signUp = async (req: Request, res: Response) => {
 
     const email = params.email;
     const password = params.password;
+    const username = params.username;
+    const phoneNumber = params.phoneNumber || null;
 
     // Validations here...
     ///////////////////////////////////////////////////
     /////////// ToDO /////////////////////////////////////
+    console.log({ params });
     /////////////////////////////////////////////////////
 
     // Check for already registered
@@ -41,13 +44,24 @@ const signUp = async (req: Request, res: Response) => {
     // Hash Password
     const { hash: hashedPassword } = await generateHash({ data: password });
 
-    // Store to DB
+    // Store to DB - create user
     const v4 = uuid.v4;
     const userId = v4();
-    const result = await users.create({
+    await users.create({
       id: userId,
       email,
       password: hashedPassword,
+    });
+
+    // create user details
+    // For now profile photo is "",
+    // this can be replaced with the url of the profile image
+    const profilePhoto = "";
+    await userDetails.create({
+      user_id: userId,
+      username,
+      phone_number: phoneNumber,
+      profile_photo: profilePhoto,
     });
 
     // Create Session

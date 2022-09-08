@@ -1,6 +1,6 @@
 import { hashFunctions } from "..";
 import { constants } from "../../helpers";
-import uuid from "uuid";
+import * as uuid from "uuid";
 
 /**
  *
