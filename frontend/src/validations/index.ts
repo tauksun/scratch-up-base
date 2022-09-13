@@ -1,3 +1,4 @@
+import joi from "joi";
 import validationSchema from "./schema";
 
 /**
@@ -28,8 +29,7 @@ function validate(params: { data: any; schema: string }) {
       throw `No schema passed to validate function`;
     }
 
-    const schemaToValidateAgainst = validationSchema[schemaName];
-
+    const schemaToValidateAgainst = joi.object(validationSchema[schemaName]);
     if (!schemaToValidateAgainst) {
       throw `No schema is defined for ${schemaName} in schema.ts`;
     }

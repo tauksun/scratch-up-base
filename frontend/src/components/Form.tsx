@@ -1,8 +1,12 @@
 import "../css/form.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
+import Alert from "@mui/material/Alert";
 import { ChangeEvent, useState } from "react";
 import validate from "../validations";
+import constants from "../constants";
+
+const backend = constants.backend;
 
 interface IFormData {
   email: string;
@@ -19,6 +23,21 @@ function Form() {
 
   const [error, setError] = useState("");
 
+  const errorCleaner = (timeInSeconds: number) => {
+    const timeInMilliSeconds = timeInSeconds * 1000;
+    setTimeout(() => {
+      setError("");
+    }, timeInMilliSeconds);
+  };
+
+  const errorHandler = (error: any) => {
+    if (typeof error !== "string") {
+      error = "Failed to sign up";
+    }
+    errorCleaner(3);
+    setError(error);
+  };
+
   function collectFormData(event: ChangeEvent<HTMLInputElement>) {
     const target = event.target;
     const key = target.name;
@@ -32,35 +51,61 @@ function Form() {
     });
   }
 
-  function signUp() {
+  async function signUp() {
     const data = formData;
     try {
-      console.log({ data });
       validate({ data, schema: "signUp" });
-      console.log("VAlidated > Call Api ");
-      console.log({ data });
-      // API CAll ////////////////////////////////////////////
-      /////////// How to show error ///////////////////
+      const response = await fetch(`${backend}/sign-up`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      ///////////////////////////////////////////////////////
+      console.log(result);
+      ///////////////////////////////////////////////////
+      const { code, error } = result;
+      if (code !== 200) {
+        throw error;
+      }
     } catch (error: any) {
-      return setError(error);
+      return errorHandler(error);
     }
   }
 
-  function signIn() {
+  async function signIn() {
     const data = formData;
     try {
       validate({ data, schema: "signIn" });
-      console.log("VAlidated > Call Api ");
-      console.log({ data });
-      // API CAll ////////////////////////////////////////////
-      /////////// How to show error ///////////////////
+      const response = await fetch(`${backend}/sign-in`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+      const result = await response.json();
+      ///////////////////////////////////////////////////////
+      console.log(result);
+      ///////////////////////////////////////////////////
+      const { code, error } = result;
+      if (code !== 200) {
+        throw error;
+      }
     } catch (error: any) {
-      return setError(error);
+      return errorHandler(error);
     }
   }
 
   const formJSX = (
     <div id="form-parent">
+      {error && (
+        <Alert id="form-error" severity="error">
+          {error}
+        </Alert>
+      )}
       <TextField
         name="email"
         id="email"
