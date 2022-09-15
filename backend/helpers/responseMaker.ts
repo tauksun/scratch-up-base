@@ -17,8 +17,8 @@ import { pages } from "../api";
  * })
  */
 function successResponse(params: {
-  code: Number;
-  message?: String;
+  code: number;
+  message?: string;
   data?: any;
   req: Request;
   res: Response;
@@ -26,7 +26,7 @@ function successResponse(params: {
   const { req, res, code, message = null, data = null } = params;
 
   // Send Response
-  res.json({ code, message, data });
+  res.status(code).json({ code, message, data });
 }
 
 /**
@@ -73,7 +73,7 @@ function errorResponse(params: {
 
   // Send Json Response
   if (!httpResponse) {
-    return res.json({ code, error, message });
+    return res.status(code).json({ code, error, message });
   }
 
   // Send Http Response
