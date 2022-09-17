@@ -7,16 +7,24 @@ import {
   successResponse,
 } from "../../helpers";
 import { sessionFunctions, users } from "../../services";
+import validate from "../../validations";
 
 const signIn = async (req: Request, res: Response) => {
   try {
     const params = req.body;
     const email = params.email;
     const password = params.password;
+    const username = params.username;
 
-    /////////////////////////////
-    // Validations ///////////////////////////
-    /////////////////////////////
+    // Validations
+    validate({
+      data: {
+        email,
+        password,
+        username,
+      },
+      schema: "signIn",
+    });
 
     // Fetch user details from db
     const { data: userData } = await users.fetch({
@@ -85,13 +93,17 @@ const signIn = async (req: Request, res: Response) => {
       code: 200,
       data: {},
     });
-  } catch (error) {
+  } catch (error: any) {
     console.log("\n Error occured while signing in : ", error);
+    // Check for validationError flag, otherwise send a default error
+    error = error.validationError
+      ? error.validationMessage
+      : "failed to sign in";
     errorResponse({
       req,
       res,
       code: 500,
-      error: "failed to sign in",
+      error,
     });
   }
 };

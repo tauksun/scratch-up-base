@@ -8,6 +8,7 @@ import {
   setCookie,
   constants,
 } from "../../helpers";
+import validate from "../../validations";
 
 const signUp = async (req: Request, res: Response) => {
   try {
@@ -18,11 +19,16 @@ const signUp = async (req: Request, res: Response) => {
     const username = params.username;
     const phoneNumber = params.phoneNumber || null;
 
-    // Validations here...
-    ///////////////////////////////////////////////////
-    /////////// ToDO /////////////////////////////////////
-    console.log({ params });
-    /////////////////////////////////////////////////////
+    // Validations
+    validate({
+      data: {
+        email,
+        password,
+        username,
+        phoneNumber,
+      },
+      schema: "signUp",
+    });
 
     // Check for already registered
     const { data } = await users.fetch({ email, columns: ["id"] });
@@ -37,7 +43,8 @@ const signUp = async (req: Request, res: Response) => {
         req,
         res,
         code: 400,
-        error: { alreadyRegistered: 1 },
+        error: "This email is already registered.",
+        message: { alreadyRegistered: 1 },
       });
     }
 
@@ -93,13 +100,17 @@ const signUp = async (req: Request, res: Response) => {
       message: "User created successfully",
       data: {},
     });
-  } catch (error) {
+  } catch (error: any) {
     console.log("\nError occured during sign up : ", error);
+    // Check for validationError flag, otherwise send a default error
+    error = error.validationError
+      ? error.validationMessage
+      : "failed to signup";
     return errorResponse({
       req,
       res,
       code: 500,
-      error: "failed to signup",
+      error,
     });
   }
 };

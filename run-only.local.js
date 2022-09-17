@@ -238,22 +238,10 @@ function makeContainerToRun(containerNames) {
   const containersToRun = new Set();
 
   for (let container of containerNames) {
-    if (container === "frontend") {
-      containersToRun.add("frontend");
-      containersToRun.add("proxy");
-    }
     if (container === "backend") {
       containersToRun.add("backend");
-      containersToRun.add("proxy");
       containersToRun.add("database");
       containersToRun.add("redis");
-    }
-    if (container === "proxy") {
-      containersToRun.add("proxy");
-      containersToRun.add("database");
-      containersToRun.add("redis");
-      containersToRun.add("backend");
-      containersToRun.add("frontend");
     }
     containersToRun.add(container);
   }

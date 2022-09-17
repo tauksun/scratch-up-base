@@ -12,7 +12,7 @@ const validationSchema: any = {
   signIn: {
     email: joi.string().required(),
     password: joi.string().min(8).required(),
-    username: joi.string().optional(),
+    username: joi.string().optional().allow(""),
   },
 };
 

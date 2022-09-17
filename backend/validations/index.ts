@@ -48,7 +48,9 @@ function validate(params: { data: any; schema: string }) {
     return value;
   } catch (error) {
     console.log(`\n Error occured while validating : `, error);
-    throw error;
+    const validationMessage = error;
+    const validationError = 1;
+    throw { validationError, validationMessage };
   }
 }
 

@@ -32,7 +32,8 @@ function Form() {
 
   const errorHandler = (error: any) => {
     if (typeof error !== "string") {
-      error = "Failed to sign up";
+      // Default Error
+      error = "Error occured";
     }
     errorCleaner(3);
     setError(error);
@@ -63,15 +64,12 @@ function Form() {
         body: JSON.stringify(data),
       });
       const result = await response.json();
-      ///////////////////////////////////////////////////////
-      console.log(result);
-      ///////////////////////////////////////////////////
       const { code, error } = result;
       if (code !== 200) {
         throw error;
       }
     } catch (error: any) {
-      return errorHandler(error);
+     return errorHandler(error);
     }
   }
 
@@ -87,9 +85,6 @@ function Form() {
         body: JSON.stringify(data),
       });
       const result = await response.json();
-      ///////////////////////////////////////////////////////
-      console.log(result);
-      ///////////////////////////////////////////////////
       const { code, error } = result;
       if (code !== 200) {
         throw error;

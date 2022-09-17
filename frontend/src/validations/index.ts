@@ -28,7 +28,7 @@ function validate(params: { data: any; schema: string }) {
     if (!schemaName) {
       throw `No schema passed to validate function`;
     }
-
+    
     const schemaToValidateAgainst = joi.object(validationSchema[schemaName]);
     if (!schemaToValidateAgainst) {
       throw `No schema is defined for ${schemaName} in schema.ts`;
