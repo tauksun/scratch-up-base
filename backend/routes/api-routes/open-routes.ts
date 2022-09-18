@@ -1,5 +1,5 @@
 import Router from "express";
-import { userManagement } from "../api";
+import { userManagement } from "../../api";
 
 const router = Router();
 

@@ -8,7 +8,6 @@ const headersHandler = () => {
   //
   //
   console.log("In http headers handler");
-
   // MOVE OUT CONTENT SECURITY POLICY TO CONSTANTS from .env //
   // Allow only trusted sources to load resources //
   const contentSecurityPolicy: ContentSecurityPolicyOptions = {

@@ -1,10 +1,12 @@
-import "../css/form.css";
+import "../css/Form.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import { ChangeEvent, useState } from "react";
 import validate from "../validations";
 import constants from "../constants";
+import LoadingScreenJSX from "./Loading-Screen";
+import UserAccountJSX from "./User-Account";
 
 const backend = constants.backend;
 
@@ -21,6 +23,23 @@ function Form() {
     username: "",
   });
 
+  // Loading Screen //
+  const [loading, setLoading] = useState(false);
+
+  // User Account //
+  interface IUserAccountData {
+    show: boolean;
+    data: any;
+  }
+  const [userAccountData, setUserAccountData] = useState<IUserAccountData>({
+    show: false,
+    data: {},
+  });
+
+  // Form //
+  const [showForm, setShowForm] = useState(true);
+
+  // Error //
   const [error, setError] = useState("");
 
   const errorCleaner = (timeInSeconds: number) => {
@@ -39,6 +58,60 @@ function Form() {
     setError(error);
   };
 
+  // Api Functions : signIn & signUp //
+  async function interaction(interactionEvent: string) {
+    const schema = interactionEvent === "sign-in" ? "signIn" : "signUp";
+    const interactionRoute =
+      interactionEvent === "sign-in" ? "sign-in" : "sign-up";
+
+    const data = formData;
+    try {
+      validate({ data, schema });
+      // Loading
+      setLoading(true);
+      setShowForm(false);
+      const response = await fetch(`${backend}/${interactionRoute}`, {
+        method: "POST",
+        headers: {
+          "content-type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      const { code, error } = await response.json();
+
+      if (code !== 200) {
+        throw error;
+      }
+
+      // Fetch User Data //
+      const userDataResponse = await fetch(`${backend}/user-data`);
+      const userDataResult = await userDataResponse.json();
+      if (userDataResult.code !== 200) {
+        throw userDataResult.error;
+      }
+      const userData = userDataResult.data;
+
+      // Show user Account
+      setLoading(false);
+      setShowForm(false);
+      setUserAccountData({ show: true, data: userData });
+    } catch (error: any) {
+      setLoading(false);
+      setShowForm(true);
+      return errorHandler(error);
+    }
+  }
+
+  function signUp() {
+    return interaction("sign-up");
+  }
+
+  function signIn() {
+    return interaction("sign-in");
+  }
+
+  // Form //
   function collectFormData(event: ChangeEvent<HTMLInputElement>) {
     const target = event.target;
     const key = target.name;
@@ -50,48 +123,6 @@ function Form() {
         [key]: value,
       };
     });
-  }
-
-  async function signUp() {
-    const data = formData;
-    try {
-      validate({ data, schema: "signUp" });
-      const response = await fetch(`${backend}/sign-up`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      const { code, error } = result;
-      if (code !== 200) {
-        throw error;
-      }
-    } catch (error: any) {
-     return errorHandler(error);
-    }
-  }
-
-  async function signIn() {
-    const data = formData;
-    try {
-      validate({ data, schema: "signIn" });
-      const response = await fetch(`${backend}/sign-in`, {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify(data),
-      });
-      const result = await response.json();
-      const { code, error } = result;
-      if (code !== 200) {
-        throw error;
-      }
-    } catch (error: any) {
-      return errorHandler(error);
-    }
   }
 
   const formJSX = (
@@ -145,7 +176,19 @@ function Form() {
     </div>
   );
 
-  return formJSX;
+  const showJSX = (
+    <div>
+      {loading ? <LoadingScreenJSX /> : <div></div>}
+      {showForm ? formJSX : <div></div>}
+      {userAccountData.show ? (
+        <UserAccountJSX data={userAccountData.data} />
+      ) : (
+        <div></div>
+      )}
+    </div>
+  );
+
+  return showJSX;
 }
 
 export default Form;

@@ -242,6 +242,11 @@ function makeContainerToRun(containerNames) {
       containersToRun.add("backend");
       containersToRun.add("database");
       containersToRun.add("redis");
+      containersToRun.add("proxy");
+    }
+    if (container === "frontend") {
+      containersToRun.add("frontend");
+      containersToRun.add("proxy");
     }
     containersToRun.add(container);
   }
