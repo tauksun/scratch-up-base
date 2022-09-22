@@ -2,7 +2,7 @@ import "../css/Form.css";
 import TextField from "@mui/material/TextField";
 import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import validate from "../validations";
 import constants from "../constants";
 import LoadingScreenJSX from "./Loading-Screen";
@@ -17,6 +17,12 @@ interface IFormData {
 }
 
 function Form() {
+  // useEffect to check & re-direct to userAccount on refresh
+  // if user is already logged in i.e., session is active
+  useEffect(() => {
+    fetchUserData().catch((error) => {});
+  }, []);
+
   const [formData, setFormData] = useState<IFormData>({
     email: "",
     password: "",
@@ -83,19 +89,7 @@ function Form() {
       if (code !== 200) {
         throw error;
       }
-
-      // Fetch User Data //
-      const userDataResponse = await fetch(`${backend}/user-data`);
-      const userDataResult = await userDataResponse.json();
-      if (userDataResult.code !== 200) {
-        throw userDataResult.error;
-      }
-      const userData = userDataResult.data;
-
-      // Show user Account
-      setLoading(false);
-      setShowForm(false);
-      setUserAccountData({ show: true, data: userData });
+      await fetchUserData();
     } catch (error: any) {
       setLoading(false);
       setShowForm(true);
@@ -109,6 +103,21 @@ function Form() {
 
   function signIn() {
     return interaction("sign-in");
+  }
+
+  async function fetchUserData() {
+    // Fetch User Data //
+    const userDataResponse = await fetch(`${backend}/user-data`);
+    const userDataResult = await userDataResponse.json();
+    if (userDataResult.code !== 200) {
+      throw userDataResult.error;
+    }
+    const userData = userDataResult.data;
+
+    // Show user Account
+    setLoading(false);
+    setShowForm(false);
+    setUserAccountData({ show: true, data: userData });
   }
 
   // Form //
