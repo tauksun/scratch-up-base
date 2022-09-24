@@ -5,6 +5,7 @@ import {
   errorResponse,
   setCookie,
   successResponse,
+  log
 } from "../../helpers";
 import { sessionFunctions, users } from "../../services";
 import validate from "../../validations";
@@ -15,7 +16,8 @@ const signIn = async (req: Request, res: Response) => {
     const email = params.email;
     const password = params.password;
     const username = params.username;
-
+log.info({prefix:"Testing",message:"In signin <<>><><><><"})
+log.error({message:" Error testing In signin <<>><><><><"})
     // Validations
     validate({
       data: {

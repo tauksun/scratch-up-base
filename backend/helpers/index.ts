@@ -1,5 +1,6 @@
 // Tunnel //
 import constants from "./constants";
+import { log } from "./logger";
 import ask from "./terminal_functions/askPlease";
 import executeInShell from "./terminal_functions/executeInShell";
 import checkAndMigrate from "./db_functions/runMigrations";
@@ -19,6 +20,7 @@ import setCookie from "./cookie_functions/set-cookie";
 
 export {
   constants,
+  log,
   ask,
   executeInShell,
   checkAndMigrate,

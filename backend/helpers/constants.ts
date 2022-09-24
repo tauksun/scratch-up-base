@@ -3,6 +3,13 @@ const environmentVariables = process.env;
 // docker_build environment variable comes from Dockerfile
 const builtInDocker = environmentVariables.docker_build === "true";
 
+// logger //
+// this sets the default to false
+const logger = environmentVariables.logger === "true" ? true : false;
+// this sets the default to true
+const warn_logging_best_practices =
+  environmentVariables.warn_logging_best_practices === "false" ? false : true;
+
 // Database //
 const getPostgresHost = () => {
   return (
@@ -70,6 +77,8 @@ const redisCacheHashKey = environmentVariables.redisCacheHashKey || "cache";
 const constants = {
   PORT: parseInt(environmentVariables.PORT || "") || 4200,
   builtInDocker,
+  logger,
+  warn_logging_best_practices,
   allowedOrigins:
     JSON.parse(environmentVariables.CORS || "{}")?.allowedOrigins || [],
   postgresHost: getPostgresHost(),
