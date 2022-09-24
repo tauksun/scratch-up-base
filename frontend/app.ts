@@ -1,6 +1,6 @@
 import express, { Application } from "express";
 import router from "./router";
-import { constants } from "./helpers";
+import { constants, log } from "./helpers";
 import { serveStaticFiles, headersHandler, errorHandler } from "./middlewares";
 
 // Initialize application
@@ -18,7 +18,10 @@ const expressServer = () => {
   app.use(errorHandler);
 
   app.listen(PORT, () =>
-    console.log(`Successfully started application#frontend on ${PORT}`)
+    log.info({
+      prefix: "Application",
+      message: `Successfully started application#frontend on ${PORT}`,
+    })
   );
 };
 
