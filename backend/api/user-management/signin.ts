@@ -16,8 +16,7 @@ const signIn = async (req: Request, res: Response) => {
     const email = params.email;
     const password = params.password;
     const username = params.username;
-log.info({prefix:"Testing",message:"In signin <<>><><><><"})
-log.error({message:" Error testing In signin <<>><><><><"})
+    
     // Validations
     validate({
       data: {

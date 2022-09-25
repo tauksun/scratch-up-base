@@ -4,7 +4,7 @@ import Button from "@mui/material/Button";
 import Alert from "@mui/material/Alert";
 import { ChangeEvent, useEffect, useState } from "react";
 import validate from "../validations";
-import constants from "../constants";
+import constants from "../react-constants";
 import LoadingScreenJSX from "./Loading-Screen";
 import UserAccountJSX from "./User-Account";
 

@@ -1,4 +1,10 @@
 import express, { Application } from "express";
+
+// Load environment variables
+import envLoader from "./loadEnvironmentVariables";
+// Change the path to ".env" or your custom file
+envLoader({ path: "./local.env.local" });
+
 import router from "./router";
 import { constants, log } from "./helpers";
 import { serveStaticFiles, headersHandler, errorHandler } from "./middlewares";

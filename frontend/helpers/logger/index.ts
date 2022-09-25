@@ -16,9 +16,6 @@ import warnBestPractices from "./warn-best-practices";
 let log = levels;
 
 const logger = constants.logger;
-console.log("\n::::::::::::::::::::::::::::::::::::")
-console.log({logger,constants})
-console.log("\n::::::::::::::::::::::::::::::::::::")
 // Disable all log functions when logger set to false in environment variables
 if (!logger) {
   log = {
