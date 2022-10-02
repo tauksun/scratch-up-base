@@ -1,8 +1,4 @@
-import {
-  createField,
-  fetchField,
-  fetchAllFields,
-  deleteField,
-} from "./hash_functions";
+import * as hashFunctions from "./hash_functions";
+import { luaFunctions } from "./lua";
 
-export { createField, fetchField, fetchAllFields, deleteField };
+export { hashFunctions, luaFunctions };

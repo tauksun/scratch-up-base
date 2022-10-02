@@ -73,6 +73,8 @@ const redisSessionExpiryInSeconds = parseInt(
   environmentVariables.redisSessionExpiryInSeconds || "86400"
 );
 const redisCacheHashKey = environmentVariables.redisCacheHashKey || "cache";
+const redisDefaultLuaLibrary =
+  environmentVariables.redisDefaultLuaLibrary || "luaFunctionsLibrary";
 
 const constants = {
   PORT: parseInt(environmentVariables.PORT || "") || 4200,
@@ -111,6 +113,7 @@ const constants = {
   cache: {
     redisHashKey: redisCacheHashKey,
   },
+  redisDefaultLuaLibrary,
 };
 
 export default constants;
