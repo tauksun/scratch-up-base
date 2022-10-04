@@ -6,18 +6,12 @@ import { XDnsPrefetchControlOptions } from "helmet/dist/types/middlewares/x-dns-
 import { XFrameOptionsOptions } from "helmet/dist/types/middlewares/x-frame-options";
 
 const headersHandler = () => {
-  //
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  //////////////////////////////////////////////
-  console.log("In http headers handler");
-  //
   // Allow only trusted sources to load resources //
   const contentSecurityPolicy: ContentSecurityPolicyOptions = {
     directives: {
       "default-src": ["'self'"],
       "script-src": ["'self'"],
-      "style-src": ["'self'"],
+      "style-src": ["'self'", "'unsafe-inline'"],
       "frame-ancestors": ["none"],
       "connect-src": ["'self'", "http://localhost:*"],
     },
