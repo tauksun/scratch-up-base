@@ -15,10 +15,6 @@ const validateSession = async (params: {
 
     const { session } = await sessionFunctions.getSession({ sessionId });
 
-    /////////////////////////////////////////
-    // Check expiry //
-    ////////////////////////////////////////
-
     if (!session) {
       return null;
     }

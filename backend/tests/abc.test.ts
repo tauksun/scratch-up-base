@@ -1,6 +1,6 @@
-import { abc } from "../api/abc";
+// import { abc } from "../api/abc";
 
-test("Tesing jest configuration", () => {
-  const result = abc("khana");
-  expect(result).toBe("you have ordered : khana");
-});
+// test("Tesing jest configuration", () => {
+//   const result = abc("khana");
+//   expect(result).toBe("you have ordered : khana");
+// });

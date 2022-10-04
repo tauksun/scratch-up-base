@@ -3,18 +3,23 @@ import { ContentSecurityPolicyOptions } from "helmet/dist/types/middlewares/cont
 import { ReferrerPolicyOptions } from "helmet/dist/types/middlewares/referrer-policy";
 import { StrictTransportSecurityOptions } from "helmet/dist/types/middlewares/strict-transport-security";
 import { XDnsPrefetchControlOptions } from "helmet/dist/types/middlewares/x-dns-prefetch-control";
+import { XFrameOptionsOptions } from "helmet/dist/types/middlewares/x-frame-options";
 
 const headersHandler = () => {
   //
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  //////////////////////////////////////////////
+  console.log("In http headers handler");
   //
-  console.log(" -------- In http headers handler -------- ");
-
-  // MOVE OUT CONTENT SECURITY POLICY TO CONSTANTS from .env //
   // Allow only trusted sources to load resources //
   const contentSecurityPolicy: ContentSecurityPolicyOptions = {
     directives: {
-      "script-src": ["'self'", "example.com"],
-      "style-src": null,
+      "default-src": ["'self'"],
+      "script-src": ["'self'"],
+      "style-src": ["'self'"],
+      "frame-ancestors": ["none"],
+      "connect-src": ["'self'", "http://localhost:*"],
     },
   };
 
@@ -39,16 +44,26 @@ const headersHandler = () => {
     allow: false,
   };
 
+  // Helps mitigate clickjacking attacks.
+  // This header is superseded by the frame-ancestors in Content Security Policy directive
+  // But useful on old browsers, which may not support CSP.
+  const frameguard: XFrameOptionsOptions = {
+    action: "deny",
+  };
+
+  // Removes X-Powered-By header, which is not highly useful from security point of view
+  // Read this discussion to decide for yourself :  https://github.com/expressjs/express/pull/2813#issuecomment-159270428
+  const hidePoweredBy = true;
+
   const helmetOptions: HelmetOptions = {
     contentSecurityPolicy,
     referrerPolicy,
     hsts,
     dnsPrefetchControl,
+    frameguard,
+    hidePoweredBy,
   };
 
-  //
-  //
-  console.log("-------- Returnign from headersHandler -----------");
   return helmet(helmetOptions);
 };
 
