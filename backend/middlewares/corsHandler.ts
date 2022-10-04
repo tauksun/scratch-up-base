@@ -11,11 +11,17 @@ import { constants } from "../helpers";
 const corsHandler = () => {
   const allowedOrigins = constants.allowedOrigins;
 
+  // Set via environmentVariables, only use * on local
+  if (allowedOrigins === "*") {
+    return cors();
+  }
+
   const corsOptions: CorsOptions = {
     //@ts-ignore
     origin: function (origin: string, callback) {
-      // Remove !origin to block server to server access
-      if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+      // Add !origin to allow server to server or postman like tools //
+      // eg : if (allowedOrigins.indexOf(origin) !== -1 || !origin) { //
+      if (allowedOrigins.indexOf(origin) !== -1) {
         return callback(null, true);
       } else {
         return callback(new Error("Not allowed by CORS"));
