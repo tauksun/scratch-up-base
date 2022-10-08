@@ -15,6 +15,7 @@ const backendPort: number = 80;
 // Constants //
 const constants = {
   backend: `http://localhost:${backendPort}/api`,
+  logoutRoute:'logout'
 };
 
 export default constants;

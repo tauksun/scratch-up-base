@@ -15,6 +15,10 @@ interface IFormData {
   password: string;
   username: string;
 }
+export interface IUserAccountData {
+  show: boolean;
+  data: any;
+}
 
 function Form() {
   // useEffect to check & re-direct to userAccount on refresh
@@ -33,10 +37,7 @@ function Form() {
   const [loading, setLoading] = useState(false);
 
   // User Account //
-  interface IUserAccountData {
-    show: boolean;
-    data: any;
-  }
+
   const [userAccountData, setUserAccountData] = useState<IUserAccountData>({
     show: false,
     data: {},
@@ -190,7 +191,11 @@ function Form() {
       {loading ? <LoadingScreenJSX /> : <div></div>}
       {showForm ? formJSX : <div></div>}
       {userAccountData.show ? (
-        <UserAccountJSX data={userAccountData.data} />
+        <UserAccountJSX
+          data={userAccountData.data}
+          setUserAccountData={setUserAccountData}
+          setShowForm={setShowForm}
+        />
       ) : (
         <div></div>
       )}
