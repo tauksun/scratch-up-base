@@ -1,0 +1,23 @@
+version: "3.3"
+services:
+  redis:
+    image: redis:7.0.4
+    ports:
+      - 7653:6379
+    volumes:
+      - /saand/redis:/data
+    restart: always
+
+  database:
+    image: postgres:14.5
+    ports:
+      - 7654:5432
+    environment:
+      - POSTGRES_PASSWORD=local_root
+      - POSTGRES_DB=saand
+    volumes:
+      - /saand/postgres:/var/lib/postgresql/data
+    restart: always
+
+volumes:
+  saand:

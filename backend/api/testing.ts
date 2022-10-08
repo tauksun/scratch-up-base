@@ -5,7 +5,7 @@ import { connectToRedis, connectToPostgres } from "../helpers";
 import { v4 } from "uuid";
 
 import { userDetails, users } from "../services";
-import { hashFunctions } from "../services";
+import { hashFunctions, stringFunctions } from "../services";
 
 const testRoute = (req: Request, res: Response) => {
   console.log("\n\n### Hit on test route ### \n\n");
@@ -202,14 +202,44 @@ const getUserDetails = async (req: Request, res: Response) => {
   }
 };
 
+const redisFetchTest = async (req: Request, res: Response) => {
+  try {
+    console.log("\n redis fetch test\n");
+    const params = req.params;
+    const key = params.key;
+    const result = await stringFunctions.fetch({ key });
+    res.json(result);
+  } catch (error) {
+    res.json({ error });
+  }
+};
+
+const redisDeleteTest = async (req: Request, res: Response) => {
+  try {
+    console.log("\n redis delete test\n");
+    const params = req.params;
+    const key = params.key;
+    const result = await stringFunctions.del({ key });
+    res.json(result);
+  } catch (error) {
+    res.json({ error });
+  }
+};
+
 const redisInsertTest = async (req: Request, res: Response) => {
   try {
     console.log("\n redis insert test\n");
-    const result = await hashFunctions.fetchAllFields({
-      key: "test",
-      // field: "name",
-      // value: "Harsh",
+    const params = req.params;
+    const key = params.key;
+    const value = params.value;
+    const expiresAt = parseInt(params.expiresAt);
+    console.log({ params });
+    const result = await stringFunctions.create({
+      key: "name",
+      value: "namey-namey",
+      expiresAt: 1665226316780,
     });
+
     res.json(result);
   } catch (error) {
     res.json({ error });
@@ -226,4 +256,6 @@ export {
   getUser,
   getUserDetails,
   redisInsertTest,
+  redisDeleteTest,
+  redisFetchTest,
 };
