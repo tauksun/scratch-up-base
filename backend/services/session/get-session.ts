@@ -1,4 +1,4 @@
-import { hashFunctions } from "..";
+import { stringFunctions } from "..";
 import { constants } from "../../helpers";
 
 /**
@@ -15,14 +15,14 @@ const getSession = async (params: {
   try {
     const sessionId = params.sessionId;
 
-    // Redis Session Hash Key
-    const hashKey = constants.session.redisHashKey;
+    // Redis Session Key
+    const redisSessionKey = constants.session.redisSessionKey;
 
-    const { result } = await hashFunctions.fetchField({
-      key: hashKey,
-      field: sessionId,
+    const sessionKey = `${redisSessionKey}:${sessionId}`;
+    const { result } = await stringFunctions.fetch({
+      key: sessionKey,
     });
-
+    
     if (!result) {
       return {
         session: null,
@@ -32,7 +32,8 @@ const getSession = async (params: {
     // Convert back session data to object from string
     const sessionData = JSON.parse(result);
 
-    // Check for expiry
+    // Check for expiry //
+    // Additional check, irrespective of the expiry set in redis //
     const now = new Date().getTime();
     const expiryTimestamp = sessionData.expiryTimestamp;
 

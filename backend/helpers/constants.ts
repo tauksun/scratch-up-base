@@ -67,12 +67,11 @@ const jwtDefaultExpiresIn = 86400;
 
 // Default user token name //
 const userTokenName = environmentVariables.userTokenName || "sess";
-const redisSessionHashKey =
-  environmentVariables.redisSessionHashKey || "session";
+const redisSessionKey = environmentVariables.redisSessionKey || "session";
 const redisSessionExpiryInSeconds = parseInt(
   environmentVariables.redisSessionExpiryInSeconds || "86400"
 );
-const redisCacheHashKey = environmentVariables.redisCacheHashKey || "cache";
+const redisCacheKey = environmentVariables.redisCacheKey || "cache";
 const redisDefaultLuaLibrary =
   environmentVariables.redisDefaultLuaLibrary || "luaFunctionsLibrary";
 
@@ -107,11 +106,11 @@ const constants = {
   },
   userTokenName,
   session: {
-    redisHashKey: redisSessionHashKey,
+    redisSessionKey: redisSessionKey,
     expiryInSeconds: redisSessionExpiryInSeconds,
   },
   cache: {
-    redisHashKey: redisCacheHashKey,
+    redisCacheKey: redisCacheKey,
   },
   redisDefaultLuaLibrary,
 };

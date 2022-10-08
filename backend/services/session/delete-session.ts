@@ -1,4 +1,4 @@
-import { hashFunctions } from "..";
+import { stringFunctions } from "..";
 import { constants } from "../../helpers";
 
 /**
@@ -15,14 +15,11 @@ const deleteSession = async (params: {
   try {
     const sessionId = params.sessionId;
 
-    // Redis Session Hash Key
-    const hashKey = constants.session.redisHashKey;
+    // Redis Session Key
+    const redisSessionKey = constants.session.redisSessionKey;
 
-    const { result } = await hashFunctions.deleteField({
-      key: hashKey,
-      field: sessionId,
-    });
-
+    const sessionKey = `${redisSessionKey}:${sessionId}`;
+    const { result } = await stringFunctions.del({ key: sessionKey });
     if (!result) {
       return {
         result: false,

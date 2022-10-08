@@ -1,4 +1,4 @@
-import { hashFunctions } from "..";
+import { stringFunctions } from "..";
 import { constants } from "../../helpers";
 import * as uuid from "uuid";
 
@@ -18,8 +18,8 @@ const createSession = async (params: {
   try {
     const userId = params.userId;
 
-    // Session Hash Key
-    const hashKey = constants.session.redisHashKey;
+    // Session Key
+    const redisSessionKey = constants.session.redisSessionKey;
 
     // Generate unique session id
     const v4 = uuid.v4;
@@ -31,17 +31,23 @@ const createSession = async (params: {
 
     const expiryTimestamp = now + expiryInMilliseconds;
 
-    // Session Data
+    // Session Data //
+    // Storing expiry timestamp in sessionData, allows to
+    // do add logic based on expiry
+    // while retrieving session (saving extra call)
+    // eg : refresh session, prompt user to elongate session entering password again...
     const sessionData = JSON.stringify({
       userId,
       expiryTimestamp,
     });
 
+    const sessionKey = `${redisSessionKey}:${uniqueSessionId}`;
+
     // Create session in redis
-    await hashFunctions.createField({
-      key: hashKey,
-      field: uniqueSessionId,
+    await stringFunctions.create({
+      key: sessionKey,
       value: sessionData,
+      expiresAt: expiryTimestamp,
     });
 
     return {
