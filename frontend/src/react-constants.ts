@@ -51,7 +51,10 @@ if (docker_run) {
   backendPort = backend_port_in_env || default_fallback_backend_port;
 }
 
-// Constants //
+////////////////////////////////////////////
+//~~~~~~~~~~~~~~ Constants ~~~~~~~~~~~~~~~//
+///////////////////////////////////////////
+
 const constants = {
   backend: `${backendHost}:${backendPort}/api`,
   logoutRoute: "logout",
