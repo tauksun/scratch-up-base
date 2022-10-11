@@ -38,7 +38,6 @@ export default {
     "local.env.local",
     "package.*",
     "tsconfig.json",
-    "wait-for-db.sh",
   ],
 
   // Indicates which provider should be used to instrument code for coverage
