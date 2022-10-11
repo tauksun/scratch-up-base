@@ -6,7 +6,6 @@ services:
       - 7653:6379
     volumes:
       - /saand/redis:/data
-    restart: always
 
   database:
     image: postgres:14.5
@@ -17,7 +16,15 @@ services:
       - POSTGRES_DB=saand
     volumes:
       - /saand/postgres:/var/lib/postgresql/data
-    restart: always
+
+  proxy:
+    image: nginx:1.23.1
+    ports:
+      - 80:80
+    volumes:
+      - ./nginx/local:/etc/nginx/conf.d
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
 
 volumes:
   saand:

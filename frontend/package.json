@@ -26,13 +26,13 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start:dev": "REACT_APP_DEFAULT_FALLBACK_BACKEND_PORT=4200 REACT_APP_DEFAULT_FALLBACK_BACKEND_HOST='http://localhost' react-scripts start",
+    "start:dev": "BROWSER=none REACT_APP_DEFAULT_FALLBACK_BACKEND_HOST='http://localhost' REACT_APP_DEFAULT_FALLBACK_BACKEND_PORT=80 react-scripts start",
     "build:dock": "react-scripts build",
     "test": "jest",
     "eject": "react-scripts eject",
     "start:dock": "node ./dist-server/server.js",
     "build:server": "tsc --project ./tsconfig.server.json",
-    "dock": "REACT_APP_DOCKER_BUILD=true REACT_APP_DOCKER_FALLBACK_PORT=80 REACT_APP_DEFAULT_FALLBACK_BACKEND_PORT=4200 REACT_APP_DEFAULT_FALLBACK_BACKEND_HOST='http://localhost' npm run build:dock && npm run build:server && npm run start:dock"
+    "dock": "REACT_APP_DEFAULT_FALLBACK_BACKEND_HOST='http://localhost' REACT_APP_DEFAULT_FALLBACK_BACKEND_PORT=80 npm run build:dock && npm run build:server && npm run start:dock"
   },
   "eslintConfig": {
     "extends": [
