@@ -24,7 +24,9 @@ function Form() {
   // useEffect to check & re-direct to userAccount on refresh
   // if user is already logged in i.e., session is active
   useEffect(() => {
-    fetchUserData().catch((error) => {});
+    fetchUserData().catch((error) => {
+      // Do something with error : store with context || asynchronously send to backend for analyzing...
+    });
   }, []);
 
   const [formData, setFormData] = useState<IFormData>({
