@@ -1,3 +1,4 @@
+import "../css/User-Account.css";
 import Button from "@mui/material/Button";
 import constants from "../react-constants";
 import React from "react";
@@ -41,8 +42,8 @@ function UserAccount(props: {
   }
 
   const userAccountJSX = (
-    <div>
-      <h1>Welcome to Scratch-Up {username}</h1>
+    <div id="userAccount">
+      <h2>Welcome to Scratch-Up {username}</h2>
       <br />
       <Button onClick={logOut} variant={"contained"}>
         Log out

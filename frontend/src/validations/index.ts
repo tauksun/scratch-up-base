@@ -26,12 +26,12 @@ function validate(params: { data: any; schema: string }) {
 
     // Don't check on data, as it can be a empty string, 0, null, undefined
     if (!schemaName) {
-      throw `No schema passed to validate function`;
+      throw new Error(`No schema passed to validate function`);
     }
 
     const schemaToValidateAgainst = joi.object(validationSchema[schemaName]);
     if (!schemaToValidateAgainst) {
-      throw `No schema is defined for ${schemaName} in schema.ts`;
+      throw new Error(`No schema is defined for ${schemaName} in schema.ts`);
     }
 
     const result = schemaToValidateAgainst.validate(data);
@@ -46,7 +46,6 @@ function validate(params: { data: any; schema: string }) {
     const value = result.value;
     return value;
   } catch (error) {
-    console.log(`\n Error occured while validating : `, error);
     throw error;
   }
 }

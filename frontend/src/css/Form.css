@@ -19,5 +19,7 @@
 }
 
 #form-error {
-  position: relative;
+  position: absolute;
+  top: 1rem;
+  z-index: 100;
 }
