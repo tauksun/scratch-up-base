@@ -1,6 +1,6 @@
 import joi from "joi";
 import validationSchema from "./schema";
-
+import { log } from "../helpers";
 /**
  *
  * @description
@@ -47,7 +47,10 @@ function validate(params: { data: any; schema: string }) {
     const value = result.value;
     return value;
   } catch (error) {
-    console.log(`\n Error occured while validating : `, error);
+    log.error({
+      prefix: "Validation Error",
+      message: { error },
+    });
     const validationMessage = error;
     const validationError = 1;
     throw { validationError, validationMessage };

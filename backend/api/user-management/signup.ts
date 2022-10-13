@@ -7,6 +7,7 @@ import {
   generateHash,
   setCookie,
   constants,
+  log,
 } from "../../helpers";
 import validate from "../../validations";
 
@@ -32,10 +33,6 @@ const signUp = async (req: Request, res: Response) => {
 
     // Check for already registered
     const { data } = await users.fetch({ email, columns: ["id"] });
-
-    //-------------------------------------------------------//
-    console.log({ data });
-    //-------------------------------------------------------//
 
     if (data) {
       // User already exists
@@ -101,7 +98,10 @@ const signUp = async (req: Request, res: Response) => {
       data: {},
     });
   } catch (error: any) {
-    console.log("\nError occured during sign up : ", error);
+    log.error({
+      prefix: "Sign Up",
+      message: { error },
+    });
     // Check for validationError flag, otherwise send a default error
     error = error.validationError
       ? error.validationMessage

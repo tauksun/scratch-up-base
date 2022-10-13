@@ -1,4 +1,4 @@
-import { constants, ask, executeInShell } from "..";
+import { constants, ask, executeInShell, log } from "..";
 
 const seedDatabase = constants.seedDatabase;
 
@@ -20,10 +20,10 @@ const checkAndSeed = async () => {
       }
       await seed();
     } catch (error) {
-      console.log(
-        "\n\nError occured while asking for seeding database : ",
-        error
-      );
+      log.error({
+        prefix: "Seeding Database",
+        message: { error },
+      });
     }
     return;
   }
@@ -40,10 +40,23 @@ const checkAndSeed = async () => {
 // Function to run seed //
 async function seed(): Promise<any> {
   try {
-    console.log("\n\n Seeding Database \n\n");
+    log.info({
+      prefix: "Seeding Database",
+      message: {
+        data: "Initiating...",
+      },
+    });
     // await executeInShell("./node_modules/knex/bin/cli.js seed:run");
-    console.log("\n\n Database seeding ran successfully\n\n");
-    console.log(`
+    log.info({
+      prefix: "Seeding Database",
+      message: {
+        data: "Seeding completed successfully",
+      },
+    });
+    log.info({
+      prefix: "Seeding Database",
+      message: {
+        data: `
         ###############################################
 
         REMEMBER TO SET : seedDatabase = false in .env
@@ -51,10 +64,17 @@ async function seed(): Promise<any> {
         initial setup.
         
         #################################################
-    `)
+        `,
+      },
+    });
     return;
   } catch (error) {
-    console.log("\n\nError occured while seeding database : ", error);
+    log.error({
+      prefix: "Seeding Database",
+      message: {
+        error,
+      },
+    });
     return;
   }
 }

@@ -1,5 +1,5 @@
 import { Request } from "express";
-
+import { log } from "..";
 /**
  *
  * @description
@@ -35,7 +35,10 @@ const cookieFetcher = (params: { req: Request; cookie: string }): string => {
 
     return cookieToFetchValue;
   } catch (error) {
-    console.log("\n Error occured while fetching cookie : ", error);
+    log.error({
+      prefix: "Fetching Cookie",
+      message: { error },
+    });
     return "";
   }
 };

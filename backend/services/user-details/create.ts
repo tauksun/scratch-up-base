@@ -1,4 +1,4 @@
-import { connectToPostgres, constants } from "../../helpers";
+import { connectToPostgres, constants, log } from "../../helpers";
 
 /**
  *
@@ -49,7 +49,10 @@ const createUserDetails = async (params: {
       data: result,
     };
   } catch (error: any) {
-    console.log("\n Error occured while creating user details : ", error);
+    log.error({
+      prefix: "Creating User Details",
+      message: { error },
+    });
     throw error;
   }
 };

@@ -1,5 +1,5 @@
 import { stringFunctions } from "..";
-import { constants } from "../../helpers";
+import { constants, log } from "../../helpers";
 
 /**
  *
@@ -30,7 +30,10 @@ const deleteSession = async (params: {
       result: true,
     };
   } catch (error) {
-    console.log("\n Error occured while deleting session from redis : ", error);
+    log.error({
+      prefix: "Deleting Session",
+      message: { error },
+    });
     throw error;
   }
 };

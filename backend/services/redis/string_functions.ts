@@ -48,7 +48,7 @@ const create = async (params: {
     return result;
   } catch (error) {
     log.error({
-      prefix: "Redis String > Create",
+      prefix: "Redis String : Create",
       message: {
         error,
       },
@@ -74,7 +74,7 @@ const fetch = async (params: {
     return { result: data };
   } catch (error) {
     log.error({
-      prefix: "Redis String > Fetch",
+      prefix: "Redis String : Fetch",
       message: {
         error,
       },
@@ -100,7 +100,7 @@ const del = async (params: {
     return { result };
   } catch (error) {
     log.error({
-      prefix: "Redis String > Delete",
+      prefix: "Redis String : Delete",
       message: {
         error,
       },

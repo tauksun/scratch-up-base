@@ -1,5 +1,5 @@
 import knex, { Knex } from "knex";
-import { constants } from "..";
+import { constants, log } from "..";
 
 const {
   postgresUser,
@@ -14,10 +14,20 @@ let connectionToPostgres: Knex;
 const connect = async () => {
   try {
     if (connectionToPostgres) {
-      console.log("\n\nConnection to Postgres already exists.\n\n");
+      log.info({
+        prefix: "Postgres",
+        message: {
+          data: "Connection to Postgres already exists",
+        },
+      });
       return connectionToPostgres;
     }
-    console.log("\n\nEstablishing connection to Postgres...");
+    log.info({
+      prefix: "Postgres",
+      message: {
+        data: "Establishing connection to Postgres",
+      },
+    });
     connectionToPostgres = knex({
       client: "pg",
       connection: {
@@ -30,7 +40,10 @@ const connect = async () => {
     });
     return connectionToPostgres;
   } catch (error) {
-    console.log("\n\nError occured while connecting to postgres : ", error);
+    log.error({
+      prefix: "Connecting to Postgres",
+      message: { error },
+    });
     return connectionToPostgres;
   }
 };

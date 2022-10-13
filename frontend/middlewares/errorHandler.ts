@@ -1,4 +1,5 @@
 import { NextFunction, Request, Response } from "express";
+import { log } from "../helpers";
 
 /**
  * @description
@@ -16,7 +17,13 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("\n Error caught in errorHandler : ", error?.stack || error);
+  log.info({
+    prefix: "Error Handler",
+    message: {
+      data: "Error caught in errorHandler",
+      error: error?.stack || error,
+    },
+  });
 
   // check for the code in error, if not found default to 500
   const code = error?.code || 500;

@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from "express";
-import { constants, errorResponse, getUserToken } from "../../helpers";
+import { constants, errorResponse, getUserToken, log } from "../../helpers";
 import validateSession from "./db-session-checker";
 
 /**
@@ -17,10 +17,6 @@ const authenticate = async (
   next: NextFunction
 ) => {
   try {
-    //////////////////////////////////////////////
-    console.log("\n-- Going through authentication middleware --\n");
-    //////////////////////////////////////////////
-
     // Get user token from request //
     const userTokenName = constants.userTokenName;
     const sessionId = getUserToken({ req, userTokenName });
@@ -46,7 +42,12 @@ const authenticate = async (
   } catch (error) {
     // Responding with a bad request
     // user can be redirected here to the login page //
-    console.log("\n Error occured while authenticating user : ", error);
+    log.error({
+      prefix: "Authenticating User",
+      message: {
+        error,
+      },
+    });
     errorResponse({ req, res, code: 400, error: "Not Authenticated" });
   }
 };

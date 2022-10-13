@@ -1,4 +1,4 @@
-import { constants, ask, executeInShell } from "..";
+import { constants, ask, executeInShell, log } from "..";
 
 const runMigrations = constants.runMigrations;
 
@@ -21,7 +21,10 @@ const checkAndMigrate = async () => {
       }
       await migrate();
     } catch (error) {
-      console.log("\n\nError occured while asking for migrations : ", error);
+      log.error({
+        prefix: "Migrations",
+        message: { error },
+      });
     }
     return;
   }
@@ -38,12 +41,25 @@ const checkAndMigrate = async () => {
 // Function to run migrations //
 async function migrate(): Promise<any> {
   try {
-    console.log("\n\n Running migrations \n\n");
+    log.info({
+      prefix: "Migrations",
+      message: {
+        data: "Running migrations...",
+      },
+    });
     await executeInShell("./node_modules/knex/bin/cli.js migrate:up");
-    console.log("\n\n Migrations ran successfully\n\n");
+    log.info({
+      prefix: "Migrations",
+      message: {
+        data: "Migrations ran successfully",
+      },
+    });
     return;
   } catch (error) {
-    console.log("\n\nError occured while running migrations : ", error);
+    log.error({
+      prefix: "Migrations : Running",
+      message: { error },
+    });
     return;
   }
 }

@@ -1,4 +1,5 @@
 import { sessionFunctions } from "../../services";
+import { log } from "../../helpers";
 
 /**
  *
@@ -21,7 +22,10 @@ const validateSession = async (params: {
 
     return { session };
   } catch (error) {
-    console.log("\n Error occured while validating session with db : ", error);
+    log.error({
+      prefix: "Validating Session With Database",
+      message: { error },
+    });
     throw error;
   }
 };

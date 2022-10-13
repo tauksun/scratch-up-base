@@ -5,7 +5,7 @@ import {
   errorResponse,
   setCookie,
   successResponse,
-  log
+  log,
 } from "../../helpers";
 import { sessionFunctions, users } from "../../services";
 import validate from "../../validations";
@@ -16,7 +16,7 @@ const signIn = async (req: Request, res: Response) => {
     const email = params.email;
     const password = params.password;
     const username = params.username;
-    
+
     // Validations
     validate({
       data: {
@@ -95,7 +95,10 @@ const signIn = async (req: Request, res: Response) => {
       data: {},
     });
   } catch (error: any) {
-    console.log("\n Error occured while signing in : ", error);
+    log.error({
+      prefix: "Sign In",
+      message: { error },
+    });
     // Check for validationError flag, otherwise send a default error
     error = error.validationError
       ? error.validationMessage

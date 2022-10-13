@@ -1,4 +1,4 @@
-import { connectToPostgres, constants } from "../../helpers";
+import { connectToPostgres, constants, log } from "../../helpers";
 
 type validColumns = "id" | "email" | "password" | "created_at" | "updated_at";
 
@@ -66,7 +66,10 @@ const fetch = async (params: {
       data: result,
     };
   } catch (error: any) {
-    console.log("\n Error occured while fetching user : ", error);
+    log.error({
+      prefix: "Fetching User",
+      message: { error },
+    });
     throw error;
   }
 };

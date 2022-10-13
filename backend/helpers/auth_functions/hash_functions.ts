@@ -1,5 +1,5 @@
 import bcrypt from "bcryptjs";
-import { constants } from "../../helpers";
+import { constants, log } from "../../helpers";
 
 /**
  *
@@ -21,22 +21,32 @@ function generateHash(params: { data: string }): Promise<{
       const saltRounds: number = constants.hash.saltRounds;
       bcrypt.genSalt(saltRounds, function (err, salt) {
         if (err) {
-          console.log(
-            "\nError occured while generating salt for hashing : ",
-            err
-          );
+          log.error({
+            prefix: "Generating salt for hashing",
+            message: {
+              error: err,
+            },
+          });
           return reject(err);
         }
         bcrypt.hash(data, salt, function (err, hash) {
           if (err) {
-            console.log("\nError occured while generating hash : ", err);
+            log.error({
+              prefix: "Generating Hash",
+              message: {
+                error: err,
+              },
+            });
             return reject(err);
           }
           return resolve({ hash });
         });
       });
     } catch (error: any) {
-      console.log("\n Error occured during generating hash : ", error);
+      log.error({
+        prefix: "Generating Hash",
+        message: { error },
+      });
       reject(error);
     }
   });
@@ -63,13 +73,21 @@ function compareHash(params: { data: string; hash: string }): Promise<{
       const hash = params.hash;
       bcrypt.compare(data, hash, function (err, result) {
         if (err) {
-          console.log("\n Error while comparing data & hash : ", err);
+          log.error({
+            prefix: "Comparing data & hash",
+            message: {
+              error: err,
+            },
+          });
           return reject(err);
         }
         resolve({ result });
       });
     } catch (error: any) {
-      console.log("\n Error occured while comparing data & hash : ", error);
+      log.error({
+        prefix: "Comparing Data & Hash",
+        message: { error },
+      });
       return reject(error);
     }
   });

@@ -5,7 +5,7 @@
  * such that the client library can be replaced
  * with another without affecting the project/code structure.
  */
-import { connectToRedis } from "../../helpers";
+import { connectToRedis, log } from "../../helpers";
 
 /**
  *
@@ -23,10 +23,10 @@ const createField = async (params: {
     const result = await connection.HSET(key, field, value);
     return { result };
   } catch (error) {
-    console.log(
-      "\n Error occured while creating hash field in redis : ",
-      error
-    );
+    log.error({
+      prefix: "Redis : Creating Hash Field",
+      message: { error },
+    });
     throw error;
   }
 };
@@ -47,10 +47,10 @@ const fetchAllFields = async (params: {
     const data = await connection.HGETALL(key);
     return { result: data };
   } catch (error) {
-    console.log(
-      "\n Error occured while fetching all hash fields from redis : ",
-      error
-    );
+    log.error({
+      prefix: "Redis : Fetching All Hash Fields",
+      message: { error },
+    });
     throw error;
   }
 };
@@ -72,10 +72,12 @@ const fetchField = async (params: {
     const data = await connection.HGET(key, field);
     return { result: data };
   } catch (error) {
-    console.log(
-      "\n Error occured while fetching hash field from redis : ",
-      error
-    );
+    log.error({
+      prefix: "Redis : Fetching Hash Field",
+      message: {
+        error,
+      },
+    });
     throw error;
   }
 };
@@ -97,10 +99,12 @@ const deleteField = async (params: {
     const result = await connection.HDEL(key, field);
     return { result };
   } catch (error) {
-    console.log(
-      "\n Error occured while deleting hash field from redis : ",
-      error
-    );
+    log.error({
+      prefix: "Redis : Deleting Hash Field",
+      message: {
+        error,
+      },
+    });
     throw error;
   }
 };

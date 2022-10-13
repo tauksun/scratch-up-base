@@ -1,5 +1,5 @@
 import { stringFunctions } from "..";
-import { constants } from "../../helpers";
+import { constants, log } from "../../helpers";
 
 /**
  *
@@ -22,7 +22,7 @@ const getSession = async (params: {
     const { result } = await stringFunctions.fetch({
       key: sessionKey,
     });
-    
+
     if (!result) {
       return {
         session: null,
@@ -48,10 +48,10 @@ const getSession = async (params: {
       session: sessionData,
     };
   } catch (error) {
-    console.log(
-      "\n Error occured while getting session data from redis : ",
-      error
-    );
+    log.error({
+      prefix: "Getting Session From Redis",
+      message: { error },
+    });
     throw error;
   }
 };

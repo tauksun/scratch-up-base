@@ -1,5 +1,5 @@
 import { Response } from "express";
-
+import { log } from "..";
 /**
  *
  * @description
@@ -109,7 +109,10 @@ const setCookie = (params: {
 
     return true;
   } catch (error) {
-    console.log("\n Error occured while setting cookie : ", error);
+    log.error({
+      prefix: "Setting Cookie",
+      message: { error },
+    });
     return false;
   }
 };

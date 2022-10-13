@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from "express";
 import { pages } from "../api";
-import { errorResponse } from "../helpers";
+import { errorResponse, log } from "../helpers";
 
 /**
  *
@@ -23,7 +23,13 @@ const errorHandler = (
   res: Response,
   next: NextFunction
 ) => {
-  console.log("\n Caught error in errorHandler : ", error?.stack || error);
+  log.info({
+    prefix: "ErrorHandler",
+    message: {
+      data: "Error caught in errorHandler",
+      error: error?.stack || error,
+    },
+  });
 
   // Logic for custom error thrown with code //
   // Check the code to respond with appropiate error message //

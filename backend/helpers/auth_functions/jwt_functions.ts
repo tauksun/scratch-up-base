@@ -1,5 +1,5 @@
 import jsonwebtoken from "jsonwebtoken";
-import { constants } from "../../helpers";
+import { constants, log } from "../../helpers";
 
 /**
  *
@@ -50,7 +50,10 @@ function generateJWT(params: {
         resolve({ token });
       });
     } catch (error: any) {
-      console.log("\n Error occured while generating token : ", error);
+      log.error({
+        prefix: "Generating Token",
+        message: { error },
+      });
       reject(error);
     }
   });
@@ -86,7 +89,10 @@ function verifyJWT(params: { token: string }): Promise<{
         });
       });
     } catch (error: any) {
-      console.log("\n Error occured while verifying token : ", error);
+      log.error({
+        prefix: "Verifying Token",
+        message: { error },
+      });
       reject(error);
     }
   });
@@ -111,7 +117,10 @@ function decodeJWT(params: { token: string }) {
       payload: decodedPayload,
     };
   } catch (error: any) {
-    console.log("\n Error occured while decoding token : ", error);
+    log.error({
+      prefix: "Decoding Token",
+      message: { error },
+    });
     throw error;
   }
 }

@@ -1,5 +1,5 @@
 import { createClient, RedisClientType } from "redis";
-import { constants } from "..";
+import { constants, log } from "..";
 
 const { redisUsername, redisPassword, redisHost, redisPort } = constants;
 
@@ -16,21 +16,40 @@ let connectionToRedis: RedisClientType;
 const connect = async () => {
   try {
     if (connectionToRedis) {
-      console.log("\n\nConnection to Redis already exists.");
+      log.info({
+        prefix: "Redis",
+        message: {
+          data: "Connection to Redis already exists.",
+        },
+      });
       return connectionToRedis;
     }
-    console.log("\n\nEstablishing connection to Redis ...");
-
+    log.info({
+      prefix: "Redis",
+      message: {
+        data: "Establishing connection to Redis",
+      },
+    });
     connectionToRedis = createClient({
       url: getRedisURL(),
     });
 
     await connectionToRedis.connect();
-    console.log("\n\nSuccessfully connected to Redis.");
+    log.info({
+      prefix: "Redis",
+      message: {
+        data: "Successfully connected to Redis",
+      },
+    });
 
     return connectionToRedis;
   } catch (error) {
-    console.log("\n\nError occured while connecting to Redis : ", error);
+    log.error({
+      prefix: "Connecting To Redis",
+      message: {
+        error,
+      },
+    });
     return connectionToRedis;
   }
 };

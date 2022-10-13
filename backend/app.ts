@@ -12,6 +12,7 @@ import {
   checkAndSeed,
   connectToPostgres,
   connectToRedis,
+  log,
 } from "./helpers";
 import { corsHandler, headersHandler, errorHandler } from "./middlewares";
 
@@ -63,7 +64,10 @@ const expressServer = async () => {
   // Start Application
 
   app.listen(PORT, () => {
-    console.log(`Successfully started application#backend on ${PORT}`);
+    log.info({
+      prefix: "Application",
+      message: { data: `Successfully started application#backend on ${PORT}` },
+    });
   });
 };
 

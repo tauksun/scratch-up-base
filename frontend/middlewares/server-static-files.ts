@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { existsSync } from "fs";
 import path from "path";
+import { log } from "../helpers";
 
 const serveStaticFiles = (req: Request, res: Response, next: NextFunction) => {
   const url = req.url;
@@ -27,7 +28,12 @@ const serveStaticFiles = (req: Request, res: Response, next: NextFunction) => {
   if (!isExists) {
     // Throw error with code 404 for not-found
     // This will be caught by errorHandler middleware
-    console.log(`\n Error requested file doesn't exists ${file}`);
+    log.error({
+      prefix: "Serve Static File",
+      message: {
+        error: `Requested file doesn't exists ${file}`,
+      },
+    });
     throw { code: 404 };
   }
 
@@ -43,7 +49,12 @@ const isFileExists = (file: string): Boolean => {
     const isExists: Boolean = existsSync(pathToStaticFile);
     return isExists;
   } catch (error: any) {
-    console.log("\n Error occured while checking for file : ", error);
+    log.error({
+      prefix: "Server Static File : Checking For File",
+      message: {
+        error,
+      },
+    });
     throw error;
   }
 };

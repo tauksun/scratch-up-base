@@ -1,6 +1,6 @@
 import { Request } from "express";
 import { cookieFetcher } from "..";
-import { constants } from "..";
+import { constants, log } from "..";
 
 /**
  *
@@ -24,7 +24,10 @@ const getUserToken = (params: {
     const userTokenValue = cookieFetcher({ req, cookie: userToken });
     return userTokenValue;
   } catch (error) {
-    console.log("\n Error occured while fetching user token : ", error);
+    log.error({
+      prefix: "Fetching User Token",
+      message: { error },
+    });
     return "";
   }
 };

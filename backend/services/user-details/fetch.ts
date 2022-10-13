@@ -1,4 +1,4 @@
-import { connectToPostgres, constants } from "../../helpers";
+import { connectToPostgres, constants, log } from "../../helpers";
 
 type validColumns =
   | "user_id"
@@ -51,7 +51,7 @@ const fetch = async (params: {
     const where = {
       user_id,
     };
-    
+
     const result = await connection(table)
       .select(...columns)
       .where(where)
@@ -62,7 +62,10 @@ const fetch = async (params: {
       data: result,
     };
   } catch (error: any) {
-    console.log("\n Error occured while fetching user details : ", error);
+    log.error({
+      prefix: "Fetching User Details",
+      message: { error },
+    });
     throw error;
   }
 };

@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { errorResponse, successResponse } from "../../helpers";
+import { errorResponse, successResponse, log } from "../../helpers";
 import { sessionFunctions } from "../../services";
 
 const logout = async (req: Request, res: Response) => {
@@ -22,7 +22,10 @@ const logout = async (req: Request, res: Response) => {
       code: 200,
     });
   } catch (error) {
-    console.log("\n Error occured while logging out : ", error);
+    log.error({
+      prefix: "Log out",
+      message: { error },
+    });
     // Pass error or messasge below as needed
     return errorResponse({
       req,

@@ -25,7 +25,9 @@ const expressServer = () => {
   app.listen(PORT, () =>
     log.info({
       prefix: "Application",
-      message: `Successfully started application#frontend on ${PORT}`,
+      message: {
+        data: `Successfully started application#frontend on ${PORT}`,
+      },
     })
   );
 };

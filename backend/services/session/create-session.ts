@@ -1,5 +1,5 @@
 import { stringFunctions } from "..";
-import { constants } from "../../helpers";
+import { constants, log } from "../../helpers";
 import * as uuid from "uuid";
 
 /**
@@ -56,7 +56,10 @@ const createSession = async (params: {
       },
     };
   } catch (error) {
-    console.log("\n Error occured while creating session in redis : ", error);
+    log.error({
+      prefix: "Creating Session",
+      message: { error },
+    });
     throw error;
   }
 };

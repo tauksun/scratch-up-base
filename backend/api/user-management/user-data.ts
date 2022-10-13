@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { errorResponse, successResponse } from "../../helpers";
+import { errorResponse, successResponse, log } from "../../helpers";
 import { userDetails } from "../../services";
 
 const getUserData = async (req: Request, res: Response) => {
@@ -28,7 +28,10 @@ const getUserData = async (req: Request, res: Response) => {
       },
     });
   } catch (error) {
-    console.log("\n Error occured while getting user data : ", error);
+    log.error({
+      prefix: "User Data",
+      message: { error },
+    });
     errorResponse({
       req,
       res,
