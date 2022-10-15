@@ -1,4 +1,4 @@
-import Router from "express";
+import { Router } from "express";
 import { authenticate } from "../../middlewares";
 import { pages } from "../../api";
 import openRouter from "./open-routes";

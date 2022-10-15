@@ -1,4 +1,4 @@
-import Router, { Request, Response } from "express";
+import { Router, Request, Response } from "express";
 import webCentricRoutes from "./web-centric-routes";
 import { getHtmlPage } from "../templates";
 

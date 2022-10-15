@@ -27,7 +27,7 @@ const expressServer = () => {
       prefix: "Application",
       message: {
         data: `Successfully started application#frontend on ${PORT}`,
-        message: `Access application at : http://localhost`,
+        message: `Access application at : http://localhost `,
       },
     })
   );

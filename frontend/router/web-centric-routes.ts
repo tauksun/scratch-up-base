@@ -1,4 +1,4 @@
-import Router, { NextFunction, Request, Response } from "express";
+import { Router, NextFunction, Request, Response } from "express";
 import path from "path";
 import { constants } from "../helpers";
 
