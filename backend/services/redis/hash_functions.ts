@@ -16,7 +16,7 @@ const createField = async (params: {
   key: string;
   field: string;
   value: string;
-}): Promise<{ result: any }> => {
+}): Promise<{ result: number }> => {
   try {
     const connection = await connectToRedis();
     const { key, field, value } = params;
@@ -64,7 +64,7 @@ const fetchField = async (params: {
   key: string;
   field: string;
 }): Promise<{
-  result: any;
+  result: string | undefined;
 }> => {
   try {
     const connection = await connectToRedis();
@@ -91,7 +91,7 @@ const deleteField = async (params: {
   key: string;
   field: string;
 }): Promise<{
-  result: any;
+  result: number;
 }> => {
   try {
     const connection = await connectToRedis();

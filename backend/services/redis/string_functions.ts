@@ -30,7 +30,7 @@ const create = async (params: {
    * Timestamp in milliseconds eg : 1665225689320
    */
   expiresAt?: number;
-}): Promise<any> => {
+}): Promise<string | null> => {
   try {
     const connection = await connectToRedis();
     const { key, value, expiresAt = null } = params;
@@ -65,7 +65,7 @@ const create = async (params: {
 const fetch = async (params: {
   key: string;
 }): Promise<{
-  result: any;
+  result: string | null;
 }> => {
   try {
     const connection = await connectToRedis();
@@ -91,7 +91,7 @@ const fetch = async (params: {
 const del = async (params: {
   key: string;
 }): Promise<{
-  result: any;
+  result: number;
 }> => {
   try {
     const connection = await connectToRedis();
