@@ -1,5 +1,6 @@
 import Router, { Request, Response } from "express";
 import webCentricRoutes from "./web-centric-routes";
+import { getHtmlPage } from "../templates";
 
 const router = Router();
 
@@ -8,7 +9,11 @@ router.use(webCentricRoutes);
 
 // Unknown routes
 router.all("/*", (req: Request, res: Response) => {
-  throw { code: 400 };
+  const notFoundTemplate = getHtmlPage({
+    page: "notFound",
+  });
+  res.setHeader("content-type", "text/html");
+  res.send(notFoundTemplate).end();
 });
 
 export default router;
