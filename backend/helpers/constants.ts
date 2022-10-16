@@ -31,7 +31,6 @@ const postgresUser = environmentVariables.POSTGRES_USER || "";
 const postgresPassword = environmentVariables.POSTGRES_PASSWORD || "";
 const postgresDB = environmentVariables.POSTGRES_DB || "";
 const runMigrations = environmentVariables.runMigrations || false;
-const seedDatabase = environmentVariables.seedDatabase || false;
 
 // Redis //
 const getRedisHost = () => {
@@ -88,7 +87,6 @@ const constants = {
   postgresDB,
   postgresPort: getPostgresPort(),
   runMigrations,
-  seedDatabase,
   redisHost: getRedisHost(),
   redisPort: getRedisPort(),
   redisUsername,

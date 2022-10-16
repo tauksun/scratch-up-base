@@ -9,7 +9,6 @@ envLoader({ path: "./local.env.local" });
 import {
   constants,
   checkAndMigrate,
-  checkAndSeed,
   connectToPostgres,
   connectToRedis,
   log,
@@ -28,9 +27,8 @@ const expressServer = async () => {
   await connectToPostgres();
   await connectToRedis();
 
-  // Check for Migrations, Seeding Database & execute accordingly
+  // Check for Migrations execute accordingly
   await checkAndMigrate();
-  await checkAndSeed();
 
   // JSON Parser
   app.use(express.json());
